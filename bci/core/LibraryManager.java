@@ -16,6 +16,7 @@ public class LibraryManager {
   /* The current library */
   // FIXME: initialize this field
   private Library _library;
+  private int _currentDay;
 
   // FIXME: add more fields if needed
   // FIXME: add constructor if needed
@@ -73,4 +74,14 @@ public class LibraryManager {
       throw new ImportFileException(datafile, e);
     }
   } 
+
+
+  
+  public int getCurrentDay() {
+    return _currentDay;
+  }
+
+  public void advanceDays(int days){
+    _currentDay += days;
+  }
 }

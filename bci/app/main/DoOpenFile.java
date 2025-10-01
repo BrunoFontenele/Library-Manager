@@ -6,22 +6,25 @@ import bci.core.exception.UnavailableFileException;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
+import bci.core.exception.*;
+import bci.core.*;
+
 
 class DoOpenFile extends Command<LibraryManager> {
 
   DoOpenFile(LibraryManager receiver) {
     super(Label.OPEN_FILE, receiver);
+    addStringField("fileName", Prompt.openFile());
   }
 
   @Override
   protected final void execute() throws CommandException {
-  /*
+    String fileName = stringField("fileName");
     try {
-    //FIXME implement command
+      _receiver.load(fileName);
     } catch (UnavailableFileException efe) {
     throw new FileOpenFailedException(efe);
     }
-  */
+  
   }
 }
