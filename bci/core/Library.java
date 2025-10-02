@@ -2,13 +2,18 @@ package bci.core;
 
 import java.io.*;
 import bci.core.exception.UnrecognizedEntryException;
-// FIXME import classes
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 /**
  * Class that represents the library as a whole.
  */
 public class Library implements Serializable {
-
+  private List<Work> _listOfWorks = new ArrayList<>();
+  private List<Creator> _listOfCreators = new ArrayList<>();
+  
   /** Serial number for serialization. */
   @Serial
   private static final long serialVersionUID = 202501101348L;
@@ -28,4 +33,15 @@ public class Library implements Serializable {
   void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
     //FIXME implement method
   }
+
+  public List<Work> getListOfWorks() {
+    return _listOfWorks;
+  }
+
+  public List<Creator> getListOfCreators() {
+    return _listOfCreators;
+  }
+  
 }
+
+  

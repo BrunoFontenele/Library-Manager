@@ -6,8 +6,6 @@ import bci.core.exception.UnavailableFileException;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-import bci.core.exception.*;
-import bci.core.*;
 
 
 class DoOpenFile extends Command<LibraryManager> {

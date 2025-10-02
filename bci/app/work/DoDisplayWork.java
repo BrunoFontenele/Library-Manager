@@ -13,11 +13,13 @@ class DoDisplayWork extends Command<LibraryManager> {
 
   DoDisplayWork(LibraryManager receiver) {
     super(Label.SHOW_WORK, receiver);
-    //FIXME add command fields
+    addIntegerField("id", Prompt.workId());
   }
 
   @Override
   protected final void execute() throws CommandException {
-     //FIXME implement command
+
+    int id = integerField("id");
+      _receiver.listWork(id);
   }
 }

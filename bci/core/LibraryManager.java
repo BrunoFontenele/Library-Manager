@@ -2,6 +2,7 @@ package bci.core;
 
 import bci.core.exception.*;
 import java.io.*;
+import java.util.Comparator;
 
 // FIXME import classes
 
@@ -17,6 +18,7 @@ public class LibraryManager {
   // FIXME: initialize this field
   private Library _library;
   private int _currentDay;
+  
 
   // FIXME: add more fields if needed
   // FIXME: add constructor if needed
@@ -84,4 +86,52 @@ public class LibraryManager {
   public void advanceDays(int days){
     _currentDay += days;
   }
+
+  public void alterInvWork(int number, int workId){
+    for(Work w : _library.getListOfWorks()){
+      if(w.getWorkId() == workId){
+        int numberOfCopies = w.getNumberOfCopies();
+        if(number > 0){
+            numberOfCopies += number;
+        }
+        else{
+            if(numberOfCopies <= number){
+                numberOfCopies = 0; //Tem que haver uma verificaçao no sistema, pois se chegar a zero deve ser removida do sistema, e se o criador não tiver mais obras tmb deve ser removido
+            }
+            else{
+                numberOfCopies -= number;
+            }
+        }
+      }
+    }
+  }
+
+  public void listWork(int workId){
+    for(Work w : _library.getListOfWorks()){
+      if(w.getWorkId() == workId){
+        System.out.println(w.toString());
+        break;
+      }
+    }
+  }
+
+  public void listWorks(){
+    _library.getListOfWorks().sort(Comparator.comparingInt(Work::getWorkId));
+    for(Work w : _library.getListOfWorks()){
+      System.out.println(w.toString());
+    }
+  }
+
+  public void listWorksByCreators(String name) {
+    for(Creator c : _library.getListOfCreators()){
+      if(c.getName().equals(name)){
+        c.getWorkList().sort(Comparator.comparing(w -> w.getTitle().toLowerCase()));
+        for(Work w : c.getWorkList()){
+          System.out.println(w.toString());
+        }
+        break;
+      }
+    }
+  }
 }
+

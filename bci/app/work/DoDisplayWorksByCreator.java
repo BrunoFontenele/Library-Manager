@@ -11,11 +11,13 @@ import pt.tecnico.uilib.menus.Command;
 class DoDisplayWorksByCreator extends Command<LibraryManager> {
   DoDisplayWorksByCreator(LibraryManager receiver) {
     super(Label.SHOW_WORKS_BY_CREATOR, receiver);
-    //FIXME add command fields
+    addStringField("name", Prompt.creatorId());
   }
 
   @Override
   protected final void execute() throws NoSuchCreatorException {
     //FIXME implement command
+    String name = stringField("name");
+    _receiver.listWorksByCreators(name);
   }
 }

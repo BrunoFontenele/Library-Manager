@@ -15,6 +15,7 @@ class DoSaveFile extends Command<LibraryManager> {
 
   DoSaveFile(LibraryManager receiver) {
     super(Label.SAVE_FILE, receiver);
+    
   }
 
   @Override
