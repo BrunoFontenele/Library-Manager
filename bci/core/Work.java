@@ -11,7 +11,8 @@ public abstract class Work {
 
     
     public Work(String title, int price, int numberOfCopies, Category type){
-        _workId = _newWorkId++;
+        _workId = _newWorkId;
+        _newWorkId++;
         _title = title;
         _numberOfCopies = _AvailableCopies = numberOfCopies;
         _price = price;
@@ -39,7 +40,8 @@ public abstract class Work {
         _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategory(), getAdInfo());
     }
 
-    
+    //package-private?
+    //alterar numero de copias
 
 
 }

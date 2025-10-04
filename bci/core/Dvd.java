@@ -17,7 +17,7 @@ public class Dvd extends Work{
 
     @Override
     public String getAdInfo(){
-        return _creator.getName() + _igac;
+        return _creator.getName() + " " + _igac;
     }
 
     public Creator getCreator() {
