@@ -1,10 +1,11 @@
 package bci.core;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-public abstract class Creator {
+public class Creator {
     private String _name;
     private List<Work> _workList;
 
@@ -31,7 +32,7 @@ public abstract class Creator {
     public String getName() {return _name;}
 
     public List<Work> getWorkList() {
-        return _workList;
+        return Collections.unmodifiableList(_workList);
     }
     
 } 

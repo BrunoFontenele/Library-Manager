@@ -23,6 +23,6 @@ class DoOpenFile extends Command<LibraryManager> {
     } catch (UnavailableFileException efe) {
     throw new FileOpenFailedException(efe);
     }
-  
+  //temos que ter um dirty no library manager para checar alterações
   }
 }

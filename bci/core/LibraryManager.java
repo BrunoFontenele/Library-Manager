@@ -76,8 +76,6 @@ public class LibraryManager {
       throw new ImportFileException(datafile, e);
     }
   } 
-
-
   
   public int getCurrentDay() {
     return _currentDay;

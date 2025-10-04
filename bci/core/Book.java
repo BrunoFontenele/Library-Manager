@@ -7,7 +7,7 @@ public class Book extends Work{
     public Book(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type) {
         super(title, price, numberOfCopies, type);
         _isbn = isbn;
-        _creators = creators;
+        _creators = creators.clone();
     }
 
     @Override
@@ -21,11 +21,12 @@ public class Book extends Work{
         for (int i = 0; i < _creators.length; i++) {
             creators[i] = _creators[i].getName();
         }
-        return String.join(";", creators) + _isbn;
+        return String.join(";", creators) + " " + _isbn;
     }
 
     public Creator[] getCreators() {
-        return _creators;
+        creators = _creators.clone;
+        return creators;
     }
 
 }

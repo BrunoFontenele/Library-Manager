@@ -3,7 +3,6 @@ package bci.app.main;
 import bci.core.LibraryManager;
 import pt.tecnico.uilib.menus.Command;
 
-
 /**
  * 4.1.3. Advance the current date.
  */
