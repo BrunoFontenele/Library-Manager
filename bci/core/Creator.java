@@ -9,10 +9,9 @@ public class Creator {
     private String _name;
     private List<Work> _workList;
 
-    public Creator(String name, Work work){
+    public Creator(String name){
         _name = name;
         _workList = new ArrayList<>();
-        _workList.add(work);
     }
 
     public void addWork(Work work){

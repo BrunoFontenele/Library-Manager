@@ -1,7 +1,6 @@
 package bci.core;
 
 public abstract class Work {
-    private static int _newWorkId = 1;
     private int _workId;
     private String _title;
     private int _price;
@@ -10,9 +9,8 @@ public abstract class Work {
     private Category _type;
 
     
-    public Work(String title, int price, int numberOfCopies, Category type){
+    public Work(String title, int price, int numberOfCopies, Category type, int id){
         _workId = _newWorkId;
-        _newWorkId++;
         _title = title;
         _numberOfCopies = _AvailableCopies = numberOfCopies;
         _price = price;

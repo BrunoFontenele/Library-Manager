@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-import bci.core.User;
-
 /**
  * Class that represents the library as a whole.
  */
@@ -54,6 +52,8 @@ public class Library implements Serializable {
     }
   } 
 
+  /* Time */
+
   int getCurrentDay() {
     return _currentDay;
   }
@@ -62,8 +62,10 @@ public class Library implements Serializable {
     _currentDay += days;
   }
 
+  /* User  */
+
   User registerUser(String userName, String email){
-    User newUser = new user(userName, email, _nextUserId);
+    User newUser = new User(userName, email, _nextUserId);
     _listOfUsers.put(_nextUserId, newUser);
     _nextUserId++;
     _modified = true;
@@ -72,6 +74,10 @@ public class Library implements Serializable {
 
   User getUser(int id){
     return _listOfUsers.get(id);
+  }
+
+  void removeUser(int id){
+    _listOfUsers.remove(id);
   }
  
   List<User> getUsers(){
@@ -83,13 +89,38 @@ public class Library implements Serializable {
     return listOfUsers;
   }
 
+  /* Creator */
+
+  Creator registerCreator(String name){
+    Creator newCreator = new Creator(name);
+    _listOfCreators.put(name, newCreator);
+    _modified = true;
+    return newCreator;
+  }
+
+  /* Work */
+
+  void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type){
+    Dvd newDvd = new Dvd(igac, creator, title, price, numberOfCopies, type, _nextWorkId);
+    _listOfWorks.put(_nextWorkId, newDvd);
+    creator.addWork(newDvd);
+    _nextWorkId++;
+    _modified = true;
+  }
+
+  void registerBook(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type){
+    Book newBook = new Book(igac, creator, title, price, numberOfCopies, type, _nextWorkId);
+    _listOfWorks.put(_nextWorkId, newBook);
+    for(Creator creator : creators)
+      creator.addWork(newBook);
+    _nextWorkId++;
+    _modified = true;
+  }
+
   public List<Work> getListOfWorks() {
     return _listOfWorks;
   }
 
-  public List<Creator> getListOfCreators() {
-    return _listOfCreators;
-  }
   
 }
 

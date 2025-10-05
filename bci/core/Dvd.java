@@ -4,8 +4,8 @@ public class Dvd extends Work{
     private String _igac;
     private Creator _creator;
 
-    public Dvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type){
-        super(title, price, numberOfCopies, type);
+    public Dvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type, int id){
+        super(title, price, numberOfCopies, type, id);
         _igac = igac;
         _creator = creator;
     }

@@ -50,9 +50,6 @@ public class MyParser {
     }
   }
 
-  // Assumo que há um método em Library para registar um utente (por exemplo, com o nome registerUser
-  // Caso o método lançe alguma excepção do core, então será necessário apanhá-la. Se não lançar,
-  // tirar o try-catch
   private void parseUser(String[] components, String line) throws UnrecognizedEntryException {
       if (components.length != 3)
         throw new UnrecognizedEntryException ("Número inválido de campos (3) na descrição de um utente: " + line);
@@ -60,9 +57,6 @@ public class MyParser {
       _library.registerUser(components[1], components[2]);
   }
 
-  // Assumo que há um método em Library que devolve o criador dado um nome (e cria-o caso não exista)
-  // com o nome registerCriator(String)
-  // Há um método que regista um DVD em Library dado os vários componentes ou um método que adiciona uma obra
   private void parseDvd(String[] components, String line) throws UnrecognizedEntryException {
     if (components.length != 7)
       throw new UnrecognizedEntryException ("Número inválido de campos (7) na descrição de um DVD: " + line);
@@ -72,11 +66,10 @@ public class MyParser {
     Category category = Category.valueOf(components[4]);
     Creator creator = _library.registerCreator(components[2].trim());
 
-    _library.registerDvd(components[1], creator, ...);
-    // ou cria o DVD (new DVD(...)) e adiciona o dvd às obras da Library
+    _library.registerDvd(components[5], creator, components[1], price, nCopies, category);
   }
   
-  private void parseDvd(String[] components, String line) throws UnrecognizedEntryException {
+  private void parseBook(String[] components, String line) throws UnrecognizedEntryException {
     if (components.length != 7)
       throw new UnrecognizedEntryException ("Número inválido de campos (7) na descrição de um Book: " + line);
     
@@ -87,7 +80,6 @@ public class MyParser {
     for (String name : components[2].split(","))
       creators.add(_library.registerCreator(name.trim()));
 
-    _library.registerBook(components[1], creators, ...);
-    // ou cria o livro (new Book(...)) e adiciona o livro às obras da Library
+    _library.registerBook(components[5], price, components[1], nCopies, creators, category);
   }
 }

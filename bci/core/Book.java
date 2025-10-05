@@ -4,8 +4,8 @@ public class Book extends Work{
     private String _isbn;
     private Creator[] _creators;
 
-    public Book(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type) {
-        super(title, price, numberOfCopies, type);
+    public Book(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type, int id) {
+        super(title, price, numberOfCopies, type, id);
         _isbn = isbn;
         _creators = creators.clone();
     }
