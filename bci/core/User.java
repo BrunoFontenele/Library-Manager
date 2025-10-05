@@ -3,7 +3,6 @@ package bci.core;
 import bci.core.UserBehavior;
 
 public class User {
-    private static int _newUserId = 1;
     private int _id;
     private boolean _isActive;
     private String _name;
@@ -11,8 +10,8 @@ public class User {
     private int _fine;
     private UserBehavior _behavior;
 
-    public User(String name, String email){
-        _id = _newUserId;
+    public User(String name, String email, int id){
+        _id = id;
         _newUserId++;
         _isActive = true;
         _name = name;

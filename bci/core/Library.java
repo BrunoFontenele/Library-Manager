@@ -2,25 +2,39 @@ package bci.core;
 
 import java.io.*;
 import bci.core.exception.UnrecognizedEntryException;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
-
+import bci.core.User;
 
 /**
  * Class that represents the library as a whole.
  */
 public class Library implements Serializable {
-  private List<Work> _listOfWorks = new ArrayList<>();
-  private List<Creator> _listOfCreators = new ArrayList<>();
+  private Map<Integer, Work> _listOfWorks;
+  private Map<String, Creator> _listOfCreators;
+  private Map<Integer, User> _listOfUsers;
   
   /** Serial number for serialization. */
   @Serial
   private static final long serialVersionUID = 202501101348L;
 
-  // FIXME define attributes
-  // FIXME define contructor(s)
-  // FIXME define more methods
+  private int _nextWorkId;
+  private int _nextUserId;
+  private int _currentDate; //criar classe separada?
+  private boolean _modified;
+
+  public Library(){
+    _nextWorkId = 1;
+    _nextUserId = 1;
+    _currentDate = 1;
+    _modified = false;
+    _listOfWorks = new HashMap<>();
+    _listOfCreators = new HashMap<>();
+    _listOfUsers = new HashMap<>();
+  }
 
   /**
    * Read text input file at the beginning of the program and populates the
@@ -30,8 +44,43 @@ public class Library implements Serializable {
    * @throws UnrecognizedEntryException if some entry is not correct
    * @throws IOException if there is an IO erro while processing the text file
    **/
+
   void importFile(String filename) throws UnrecognizedEntryException, IOException /* FIXME maybe other exceptions */  {
-    //FIXME implement method
+    try {
+      if (datafile != null && !datafile.isEmpty())
+        MyParser(this);
+    } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+      throw new ImportFileException(datafile, e);
+    }
+  } 
+
+  int getCurrentDay() {
+    return _currentDay;
+  }
+
+  void advanceDays(int days){
+    _currentDay += days;
+  }
+
+  User registerUser(String userName, String email){
+    User newUser = new user(userName, email, _nextUserId);
+    _listOfUsers.put(_nextUserId, newUser);
+    _nextUserId++;
+    _modified = true;
+    return newUser;
+  }
+
+  User getUser(int id){
+    return _listOfUsers.get(id);
+  }
+ 
+  List<User> getUsers(){
+    List<User> listOfUsers = new ArrayList<>();
+
+    for(User users : _listOfUsers)
+      listOfUsers.add(users);
+    
+    return listOfUsers;
   }
 
   public List<Work> getListOfWorks() {
