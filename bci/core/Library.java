@@ -56,6 +56,10 @@ public class Library implements Serializable {
     }
   } 
 
+  boolean isModified(){
+    return _modified;
+  }
+
   /* Time */
 
   int getCurrentDay() {
@@ -129,6 +133,20 @@ public class Library implements Serializable {
     _nextWorkId++;
     _modified = true;
   }
+
+  Work getWork(int workId){
+    return _listOfWorks.get(workId);
+  }
+
+  String showWorks(){
+    List<Work> works = new ArrayList<>(_listOfWorks.values());
+    works.sort(Comparator.comparing((Work work) -> work.toString()).thenComparing((Work work) -> work.getWorkId()));
+    StringBuilder sb = new StringBuilder();
+    for (Work work : works)
+      sb.append(work.toString()).append("\n");
+    return sb.toString();
+  }
+
 
 
   

@@ -10,7 +10,7 @@ public abstract class Work {
 
     
     public Work(String title, int price, int numberOfCopies, Category type, int id){
-        _workId = id;
+        _workId =id;
         _title = title;
         _numberOfCopies = _AvailableCopies = numberOfCopies;
         _price = price;

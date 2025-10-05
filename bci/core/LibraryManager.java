@@ -106,20 +106,12 @@ public class LibraryManager {
     }
   }
 
-  public void listWork(int workId){
-    for(Work w : _library.getListOfWorks()){
-      if(w.getWorkId() == workId){
-        System.out.println(w.toString());
-        break;
-      }
-    }
+  public String listWork(int workId){
+    return _library.getWork(workId).toString();
   }
 
   public void listWorks(){
-    _library.getListOfWorks().sort(Comparator.comparingInt(Work::getWorkId));
-    for(Work w : _library.getListOfWorks()){
-      System.out.println(w.toString());
-    }
+
   }
 
   public void listWorksByCreators(String name) {
@@ -144,6 +136,10 @@ public class LibraryManager {
 
   public String getUsers(){
     return _library.showUsers();
+  }
+
+  public boolean isModified(){
+    return _library.isModified();
   }
 }
 
