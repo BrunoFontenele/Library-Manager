@@ -4,6 +4,8 @@ import bci.core.exception.*;
 import java.io.*;
 import java.util.Comparator;
 
+import bci.core.Library;
+
 // FIXME import classes
 
 /**
@@ -131,5 +133,18 @@ public class LibraryManager {
       }
     }
   }
+
+  public int createUser(String userName, String email){
+   return _library.registerUser(userName, email).getId();
+  }
+
+  public String getUser(int id){
+    return _library.getUser(id).toString();
+  }
+
+  public String getUsers(){
+    return _library.showUsers();
+  }
 }
+
 

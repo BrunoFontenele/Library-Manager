@@ -1,11 +1,15 @@
 package bci.core;
 
 import java.io.*;
+
+import bci.core.exception.ImportFileException;
 import bci.core.exception.UnrecognizedEntryException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Comparator;
 
 /**
  * Class that represents the library as a whole.
@@ -21,13 +25,13 @@ public class Library implements Serializable {
 
   private int _nextWorkId;
   private int _nextUserId;
-  private int _currentDate; //criar classe separada?
+  private int _currentDay; //criar classe separada?
   private boolean _modified;
 
   public Library(){
     _nextWorkId = 1;
     _nextUserId = 1;
-    _currentDate = 1;
+    _currentDay = 1;
     _modified = false;
     _listOfWorks = new HashMap<>();
     _listOfCreators = new HashMap<>();
@@ -83,10 +87,19 @@ public class Library implements Serializable {
   List<User> getUsers(){
     List<User> listOfUsers = new ArrayList<>();
 
-    for(User users : _listOfUsers)
-      listOfUsers.add(users);
+    for(User user : _listOfUsers.values())
+      listOfUsers.add(user);
     
     return listOfUsers;
+  }
+
+  String showUsers(){
+    List<User> users = new ArrayList<>(_listOfUsers.values());
+    users.sort(Comparator.comparing((User user) -> user.toString()).thenComparing((User user) -> user.getId()));
+    StringBuilder sb = new StringBuilder();
+    for (User user : users)
+      sb.append(user.toString()).append("\n");
+    return sb.toString();
   }
 
   /* Creator */
@@ -108,8 +121,8 @@ public class Library implements Serializable {
     _modified = true;
   }
 
-  void registerBook(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type){
-    Book newBook = new Book(igac, creator, title, price, numberOfCopies, type, _nextWorkId);
+  void registerBook(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type){
+    Book newBook = new Book(isbn, price, title, numberOfCopies, creators, type, _nextWorkId);
     _listOfWorks.put(_nextWorkId, newBook);
     for(Creator creator : creators)
       creator.addWork(newBook);
@@ -117,9 +130,6 @@ public class Library implements Serializable {
     _modified = true;
   }
 
-  public List<Work> getListOfWorks() {
-    return _listOfWorks;
-  }
 
   
 }

@@ -1,13 +1,18 @@
 package bci.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book extends Work{
     private String _isbn;
-    private Creator[] _creators;
+    private List<Creator> _creators;
 
-    public Book(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type, int id) {
+    public Book(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type, int id) {
         super(title, price, numberOfCopies, type, id);
         _isbn = isbn;
-        _creators = creators.clone();
+        _creators = new ArrayList<>();
+        for(Creator creator : creators)
+            _creators.add(creator);
     }
 
     @Override
@@ -17,15 +22,16 @@ public class Book extends Work{
 
     @Override
     public String getAdInfo() {
-        String[] creators = new String[_creators.length];
-        for (int i = 0; i < _creators.length; i++) {
-            creators[i] = _creators[i].getName();
-        }
-        return String.join(";", creators) + " " + _isbn;
+    List<String> names = new ArrayList<>();
+    for (Creator creator : _creators)
+        names.add(creator.getName());
+    return String.join(";", names) + " " + _isbn;
     }
 
-    public Creator[] getCreators() {
-        creators = _creators.clone;
+    public List<Creator> getCreators() {
+        List<Creator> creators = new ArrayList<>();
+        for(Creator creator : _creators)
+            creators.add(creator);
         return creators;
     }
 

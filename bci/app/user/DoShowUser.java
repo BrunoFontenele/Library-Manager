@@ -13,11 +13,12 @@ class DoShowUser extends Command<LibraryManager> {
 
   DoShowUser(LibraryManager receiver) {
     super(Label.SHOW_USER, receiver);
-    //FIXME add command fields
+    addIntegerField("userId", Prompt.userId());
   }
 
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    int userId = integerField("userId");
+    _display.addLine(_receiver.getUser(userId));
   }
 }

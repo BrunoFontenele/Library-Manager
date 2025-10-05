@@ -13,11 +13,14 @@ class DoRegisterUser extends Command<LibraryManager> {
 
   DoRegisterUser(LibraryManager receiver) {
     super(Label.REGISTER_USER, receiver);
-    //FIXME add command fields
+    addStringField("userName", Prompt.userName());
+    addStringField("email", Prompt.userEMail());
   }
 
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+    String userName = stringField("userName");
+    String email = stringField("email");
+    _receiver.createUser(userName, email); //exceptions? verificar user e email vazios
   }
 }
