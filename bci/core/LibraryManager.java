@@ -17,7 +17,7 @@ public class LibraryManager {
   /* The current library */
   // FIXME: initialize this field
   private Library _library;
-  private int _currentDay;
+  
   
 
   // FIXME: add more fields if needed
@@ -78,11 +78,11 @@ public class LibraryManager {
   } 
   
   public int getCurrentDay() {
-    return _currentDay;
+    return _library.getCurrentDay();
   }
 
   public void advanceDays(int days){
-    _currentDay += days;
+    _library.advanceDays(days);
   }
 
   public void alterInvWork(int number, int workId){

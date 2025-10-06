@@ -1,7 +1,5 @@
 package bci.core;
 
-import bci.core.UserBehavior;
-
 public class User {
     private static int _newUserId = 1;
     private int _id;
@@ -18,7 +16,7 @@ public class User {
         _name = name;
         _email = email;
         _fine = 0;
-        _behavior = "NORMAL";
+        _behavior = UserBehavior.NORMAL;
     }
 
     boolean isActive() {

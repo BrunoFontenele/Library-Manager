@@ -25,7 +25,7 @@ public class Book extends Work{
     }
 
     public Creator[] getCreators() {
-        creators = _creators.clone;
+        Creator[] creators = _creators.clone();
         return creators;
     }
 

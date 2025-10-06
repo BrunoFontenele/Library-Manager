@@ -13,6 +13,7 @@ import java.util.List;
 public class Library implements Serializable {
   private List<Work> _listOfWorks = new ArrayList<>();
   private List<Creator> _listOfCreators = new ArrayList<>();
+  private int _currentDay = 1;
   
   /** Serial number for serialization. */
   @Serial
@@ -34,14 +35,15 @@ public class Library implements Serializable {
     //FIXME implement method
   }
 
-  public List<Work> getListOfWorks() {
-    return _listOfWorks;
-  }
+  public List<Work> getListOfWorks() {return _listOfWorks;}
 
-  public List<Creator> getListOfCreators() {
-    return _listOfCreators;
-  }
+  public List<Creator> getListOfCreators() {return _listOfCreators;}
 
+  public int getCurrentDay(){ return _currentDay;}
+
+  public void advanceDays(int days){
+    _currentDay += days;
+  }
 
     public void verify(Work work){
     if(work.getNumberOfCopies() == 0){
