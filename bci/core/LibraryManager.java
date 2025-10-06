@@ -94,7 +94,8 @@ public class LibraryManager {
         }
         else{
             if(numberOfCopies <= number){
-                numberOfCopies = 0; //Tem que haver uma verificaçao no sistema, pois se chegar a zero deve ser removida do sistema, e se o criador não tiver mais obras tmb deve ser removido
+                numberOfCopies = 0;
+                _library.verify(w); //Tem que haver uma verificaçao no sistema, pois se chegar a zero deve ser removida do sistema, e se o criador não tiver mais obras tmb deve ser removido
             }
             else{
                 numberOfCopies -= number;
