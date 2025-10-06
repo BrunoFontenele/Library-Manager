@@ -16,6 +16,6 @@ class DoDisplayWorks extends Command<LibraryManager> {
   @Override
   protected final void execute() {
     //FIXME implement command
-    _receiver.listWorks();
+    _display.popup(_receiver.listWorks());
   }
 }
