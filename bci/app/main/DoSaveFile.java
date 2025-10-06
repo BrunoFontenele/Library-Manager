@@ -16,7 +16,6 @@ class DoSaveFile extends Command<LibraryManager> {
 
     DoSaveFile(LibraryManager receiver) {
         super(Label.SAVE_FILE, receiver);
-        addStringField("fileName", Prompt.newSaveAs());
     }
 
     @Override
@@ -24,6 +23,7 @@ class DoSaveFile extends Command<LibraryManager> {
         try {
             _receiver.save();
         } catch (UnavailableFileException e) {
+            addStringField("fileName", Prompt.newSaveAs());
             String filename = stringField("fileName");
 
                 try {
