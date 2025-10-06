@@ -41,6 +41,27 @@ public class Library implements Serializable {
   public List<Creator> getListOfCreators() {
     return _listOfCreators;
   }
+
+
+    public void verify(Work work){
+    if(work.getNumberOfCopies() == 0){
+      _listOfWorks.remove(work);
+    }
+    if(work instanceof Book){
+      Book workb = (Book)work;
+      for(Creator c: workb.getCreators()){
+        if(c.getWorkList().isEmpty()){
+          _listOfCreators.remove(c);
+        }
+      }
+    }
+    else{
+      Dvd workd = (Dvd)work;
+      if(workd.getCreator().getWorkList().isEmpty()){
+        _listOfCreators.remove(workd.getCreator());
+      }
+    }
+  }
   
 }
 
