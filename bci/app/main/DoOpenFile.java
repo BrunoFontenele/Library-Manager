@@ -10,19 +10,25 @@ import pt.tecnico.uilib.menus.CommandException;
 
 class DoOpenFile extends Command<LibraryManager> {
 
-  DoOpenFile(LibraryManager receiver) {
+  DoOpenFile(LibraryManager receiver){
     super(Label.OPEN_FILE, receiver);
     addStringField("fileName", Prompt.openFile());
   }
 
   @Override
   protected final void execute() throws CommandException {
-    String fileName = stringField("fileName");
+    if(_receiver.isModified())
+      if(Form.confirm(Prompt.saveBeforeExit()))
+        try{
+          _receiver.save();
+        }catch(Exception e){
+          _display.addLine("Erro em salvar.");
+        }
+    String fileName = Form.requestString(Prompt.newSaveAs());
     try {
       _receiver.load(fileName);
     } catch (UnavailableFileException efe) {
     throw new FileOpenFailedException(efe);
     }
-  //temos que ter um dirty no library manager para checar alterações
   }
 }

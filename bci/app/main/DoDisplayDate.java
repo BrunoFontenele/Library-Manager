@@ -14,7 +14,7 @@ class DoDisplayDate extends Command<LibraryManager> {
 
   @Override
   protected final void execute() {
-    Message.currentDate(_receiver.getCurrentDay());
+    _display.popup(Message.currentDate(_receiver.getCurrentDay()));
   }
 
 }

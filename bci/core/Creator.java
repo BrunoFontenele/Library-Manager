@@ -1,11 +1,12 @@
 package bci.core;
 
 import java.util.Collections;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-public class Creator {
+public class Creator implements Serializable{
     private String _name;
     private List<Work> _workList;
 

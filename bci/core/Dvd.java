@@ -4,8 +4,8 @@ public class Dvd extends Work{
     private String _igac;
     private Creator _creator;
 
-    public Dvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type, int id){
-        super(title, price, numberOfCopies, type, id);
+    public Dvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type, int nextWorkId){
+        super(title, price, numberOfCopies, type, nextWorkId);
         _igac = igac;
         _creator = creator;
     }
@@ -17,7 +17,7 @@ public class Dvd extends Work{
 
     @Override
     public String getAdInfo(){
-        return _creator.getName() + " " + _igac;
+        return _creator.getName() + " - " + _igac;
     }
 
     public Creator getCreator() {

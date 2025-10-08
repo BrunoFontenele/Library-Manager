@@ -27,6 +27,6 @@ class DoChangeWorkInventory extends Command<LibraryManager> {
     int quantity = integerField("quantity");
     int id = integerField("id");
 
-z
+    _receiver.alterInvWork(quantity, id);
   }
 }

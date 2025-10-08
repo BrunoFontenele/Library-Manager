@@ -5,34 +5,30 @@ import java.util.List;
 
 public class Book extends Work{
     private String _isbn;
-    private List<Creator> _creators;
+    private List<Creator> _creators; 
 
-    public Book(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type, int id) {
-        super(title, price, numberOfCopies, type, id);
+    public Book(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type, int nextWorkId) {
+        super(title, price, numberOfCopies, type, nextWorkId);
         _isbn = isbn;
-        _creators = new ArrayList<>();
-        for(Creator creator : creators)
-            _creators.add(creator);
+
+        _creators = new ArrayList<>(creators);
     }
 
     @Override
     public String getType() {
-        return "Book";
+        return "Livro";
     }
 
     @Override
     public String getAdInfo() {
-    List<String> names = new ArrayList<>();
-    for (Creator creator : _creators)
-        names.add(creator.getName());
-    return String.join(";", names) + " " + _isbn;
+        List<String> creatorNames = new ArrayList<>();
+        for (Creator c : _creators) {
+            creatorNames.add(c.getName());
+        }
+        return String.join(";", creatorNames) + " - " + _isbn;
     }
 
     public List<Creator> getCreators() {
-        List<Creator> creators = new ArrayList<>();
-        for(Creator creator : _creators)
-            creators.add(creator);
-        return creators;
+        return new ArrayList<>(_creators);
     }
-
 }

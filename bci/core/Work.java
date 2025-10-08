@@ -1,20 +1,22 @@
 package bci.core;
 
-public abstract class Work {
+import java.io.Serializable;
+
+public abstract class Work implements Serializable{
     private int _workId;
     private String _title;
     private int _price;
     private int _numberOfCopies;
     private int _AvailableCopies;
-    private Category _type;
+    private Category _category;
 
     
-    public Work(String title, int price, int numberOfCopies, Category type, int id){
-        _workId =id;
+    public Work(String title, int price, int numberOfCopies, Category category, int nextWorkId){
+        _workId = nextWorkId;
         _title = title;
         _numberOfCopies = _AvailableCopies = numberOfCopies;
         _price = price;
-        _type = type;
+        _category = category;
     }
 
     public int getWorkId() {return _workId;}
@@ -27,15 +29,21 @@ public abstract class Work {
 
     public int getPrice() {return _price;}
 
-    public Category getCategory() {return _type;} 
-
     public abstract String getType();
 
     public abstract String getAdInfo();
 
+    public String getCategoryString() {
+        if(_category == Category.FICTION){return "Ficção";}
+        if(_category == Category.REFERENCE){return "Referência";}
+        else{
+            return "Técnica e Científica";
+        }
+    } 
+
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-        _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategory(), getAdInfo());
+        _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
 
     //package-private?

@@ -1,9 +1,9 @@
 package bci.app.work;
 
 import bci.core.LibraryManager;
+import bci.core.exception.NoSuchCreatorExceptionCore;
 import bci.app.exception.NoSuchCreatorException;
 import pt.tecnico.uilib.menus.Command;
-//FIXME add more imports if needed
 
 /**
  * Display all works by a specific creator.
@@ -16,8 +16,12 @@ class DoDisplayWorksByCreator extends Command<LibraryManager> {
 
   @Override
   protected final void execute() throws NoSuchCreatorException {
-    //FIXME implement command
     String name = stringField("name");
-    _receiver.listWorksByCreators(name);
+    try {
+      _display.popup(_receiver.listWorksByCreators(name));
+    } catch (NoSuchCreatorExceptionCore e) {
+      throw new NoSuchCreatorException(name);
+    }
+    
   }
 }

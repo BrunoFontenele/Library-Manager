@@ -2,7 +2,6 @@ package bci.app.user;
 
 import bci.core.LibraryManager;
 import pt.tecnico.uilib.menus.Command;
-//FIXME add more imports if needed
 
 /**
  * 4.2.4. Show all users.
@@ -15,6 +14,6 @@ class DoShowUsers extends Command<LibraryManager> {
 
   @Override
   protected final void execute() {
-    _display.addLine(_receiver.getUsers());
+    _display.popup(_receiver.listUsers());
   }
 }

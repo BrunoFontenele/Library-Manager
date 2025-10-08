@@ -1,8 +1,8 @@
 package bci.core;
 
-import bci.core.UserBehavior;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
     private int _id;
     private boolean _isActive;
     private String _name;
@@ -10,8 +10,8 @@ public class User {
     private int _fine;
     private UserBehavior _behavior;
 
-    public User(String name, String email, int id){
-        _id = id;
+    public User(String name, String email, int nextUserId){
+        _id = nextUserId;
         _isActive = true;
         _name = name;
         _email = email;
@@ -19,20 +19,20 @@ public class User {
         _behavior = UserBehavior.NORMAL;
     }
 
-    boolean isActive() {
-        return _isActive;
+    public String isActive() {
+        if(_isActive){return "ACTIVO";}
+        else{return "SUSPENSO";}
     }
 
-    int getId(){
-        return _id;
-    }
+    public int getUserId(){return _id;}
+
+    public String getName(){return _name;}
 
     public String toString(){
-        if(isActive())
-            return String.format("%d - %s - %s - %s - %b",
-            _id, _name, _email, _behavior, _isActive);
-        return String.format("%d - %s - %s - %s - %b - %s %d",
-        _id, _name, _email, _behavior, _isActive, "EUR", _fine);
+        if(_fine == 0)
+            return String.format("%d - %s - %s - %s - %s",
+            _id, _name, _email, _behavior, isActive());
+        return String.format("%d - %s - %s - %s - %s - %s %d",
+        _id, _name, _email, _behavior, isActive(), "EUR", _fine);
     }
-    
 }
