@@ -28,6 +28,7 @@ class User implements Serializable{
 
     String getName(){return _name;}
 
+
     public String toString(){
         if(_fine == 0)
             return String.format("%d - %s - %s - %s - %s",

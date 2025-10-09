@@ -32,4 +32,6 @@ class Book extends Work{
     List<Creator> getCreators() {
         return Collections.unmodifiableList(_creators);
     }
+
+    String getIsbn(){return _isbn;}
 }

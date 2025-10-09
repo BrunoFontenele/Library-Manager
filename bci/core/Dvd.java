@@ -24,5 +24,5 @@ class Dvd extends Work{
         return _creator;
     }
 
-    
+    String getIgac(){return _igac;}
 }

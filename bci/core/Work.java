@@ -2,7 +2,7 @@ package bci.core;
 
 import java.io.Serializable;
 
-abstract class Work implements Serializable{
+abstract class Work implements Serializable {
     private int _workId;
     private String _title;
     private int _price;
@@ -10,7 +10,6 @@ abstract class Work implements Serializable{
     private int _AvailableCopies;
     private Category _category;
 
-    
     Work(String title, int price, int numberOfCopies, Category category, int nextWorkId){
         _workId = nextWorkId;
         _title = title;
@@ -33,20 +32,17 @@ abstract class Work implements Serializable{
 
     abstract String getAdInfo();
 
-    void setNumberOfCopies(int _numberOfCopies) {
-        this._numberOfCopies = _numberOfCopies;
-    }
+    void setNumberOfCopies(int _numberOfCopies) { this._numberOfCopies = _numberOfCopies; }
 
     String getCategoryString() {
-        if(_category == Category.FICTION){return "Ficção";}
-        if(_category == Category.REFERENCE){return "Referência";}
-        else{
-            return "Técnica e Científica";
-        }
+        if(_category == Category.FICTION) return "Ficção";
+        if(_category == Category.REFERENCE) return "Referência";
+        return "Técnica e Científica";
     } 
 
+    @Override
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-        _workId, _numberOfCopies, _AvailableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
+            _workId, _numberOfCopies, _AvailableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
 }
