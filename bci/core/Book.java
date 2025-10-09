@@ -1,31 +1,35 @@
 package bci.core;
 
-public class Book extends Work{
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+
+class Book extends Work{
     private String _isbn;
-    private Creator[] _creators;
+    private List<Creator> _creators; 
 
-    public Book(String isbn, int price, String title, int numberOfCopies, Creator[] creators, Category type) {
-        super(title, price, numberOfCopies, type);
+    Book(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type, int nextWorkId) {
+        super(title, price, numberOfCopies, type, nextWorkId);
         _isbn = isbn;
-        _creators = creators;
+
+        _creators = new ArrayList<>(creators);
     }
 
     @Override
-    public String getType() {
-        return "Book";
+    String getType() {
+        return "Livro";
     }
 
     @Override
-    public String getAdInfo() {
-        String[] creators = new String[_creators.length];
-        for (int i = 0; i < _creators.length; i++) {
-            creators[i] = _creators[i].getName();
+    String getAdInfo() {
+        List<String> creatorNames = new ArrayList<>();
+        for (Creator c : _creators) {
+            creatorNames.add(c.getName());
         }
-        return String.join(";", creators) + _isbn;
+        return String.join(";", creatorNames) + " - " + _isbn;
     }
 
-    public Creator[] getCreators() {
-        return _creators;
+    List<Creator> getCreators() {
+        return Collections.unmodifiableList(_creators);
     }
-
 }

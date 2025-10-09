@@ -18,3 +18,4 @@ public class Menu extends pt.tecnico.uilib.menus.Menu {
     );
   }
 }
+

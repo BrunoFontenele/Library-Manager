@@ -1,45 +1,48 @@
 package bci.core;
 
-public abstract class Work {
-    private static int _newWorkId = 1;
+import java.io.Serializable;
+
+abstract class Work implements Serializable{
     private int _workId;
     private String _title;
     private int _price;
     private int _numberOfCopies;
     private int _AvailableCopies;
-    private Category _type;
+    private Category _category;
 
     
-    public Work(String title, int price, int numberOfCopies, Category type){
-        _workId = _newWorkId++;
+    Work(String title, int price, int numberOfCopies, Category category, int nextWorkId){
+        _workId = nextWorkId;
         _title = title;
         _numberOfCopies = _AvailableCopies = numberOfCopies;
         _price = price;
-        _type = type;
+        _category = category;
     }
 
-    public int getWorkId() {return _workId;}
+    int getWorkId() {return _workId;}
 
-    public int getNumberOfCopies() {return _numberOfCopies;}
+    int getNumberOfCopies() {return _numberOfCopies;}
 
-    public int getAvailableCopies() {return _AvailableCopies;}
+    int getAvailableCopies() {return _AvailableCopies;}
 
-    public String getTitle() {return _title;}
+    String getTitle() {return _title;}
 
-    public int getPrice() {return _price;}
+    int getPrice() {return _price;}
 
-    public Category getCategory() {return _type;} 
+    abstract String getType();
 
-    public abstract String getType();
+    abstract String getAdInfo();
 
-    public abstract String getAdInfo();
+    String getCategoryString() {
+        if(_category == Category.FICTION){return "Ficção";}
+        if(_category == Category.REFERENCE){return "Referência";}
+        else{
+            return "Técnica e Científica";
+        }
+    } 
 
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-        _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategory(), getAdInfo());
+        _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
-
-    
-
-
 }

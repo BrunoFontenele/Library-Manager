@@ -1,6 +1,6 @@
 package bci.core;
 
-public enum Category {
+enum Category {
     REFERENCE,
     FICTION,
     SCITECH;
