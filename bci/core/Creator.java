@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-public class Creator implements Serializable{
+class Creator implements Serializable{
     private String _name;
     private List<Work> _workList;
 
-    public Creator(String name){
+    Creator(String name){
         _name = name;
         _workList = new ArrayList<>();
     }
@@ -30,7 +30,7 @@ public class Creator implements Serializable{
     
     String getName() {return _name;}
 
-    public List<Work> getWorkList() {
+    List<Work> getWorkList() {
         return Collections.unmodifiableList(_workList);
     }
     
