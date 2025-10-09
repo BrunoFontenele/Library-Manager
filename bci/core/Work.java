@@ -33,6 +33,10 @@ abstract class Work implements Serializable{
 
     abstract String getAdInfo();
 
+    void setNumberOfCopies(int _numberOfCopies) {
+        this._numberOfCopies = _numberOfCopies;
+    }
+
     String getCategoryString() {
         if(_category == Category.FICTION){return "Ficção";}
         if(_category == Category.REFERENCE){return "Referência";}
@@ -43,6 +47,6 @@ abstract class Work implements Serializable{
 
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-        _workId, _AvailableCopies, _numberOfCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
+        _workId, _numberOfCopies, _AvailableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
 }

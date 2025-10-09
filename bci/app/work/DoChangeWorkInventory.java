@@ -4,6 +4,7 @@ import bci.core.LibraryManager;
 import bci.app.exception.NoSuchWorkException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+import bci.core.exception.*;
 //FIXME add more imports if needed
 
 /**
@@ -23,10 +24,15 @@ class DoChangeWorkInventory extends Command<LibraryManager> {
  
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
     int quantity = integerField("quantity");
     int id = integerField("id");
 
-    _receiver.alterInvWork(quantity, id);
+    try {
+      _receiver.alterInvWork(quantity, id);
+    } catch (NotEnoughInventoryExceptionCore e) {
+      _display.popup(Message.notEnoughInventory(id, quantity));
+    } catch (NoSuchWorkExceptionCore e) {
+      throw new NoSuchWorkException(id);
+    }
   }
 }

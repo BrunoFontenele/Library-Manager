@@ -42,7 +42,10 @@ public void save() throws UnavailableFileException, IOException {
  * @param filename The name of the file to save to.
  * @throws IOException If an error occurs while writing the file.
  */
-public void saveAs(String filename) throws IOException {
+public void saveAs(String filename) throws IOException, MissingFileAssociationException {
+    if (filename == null || filename.isBlank()) {
+        throw new MissingFileAssociationException();
+    }
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
         out.writeObject(_library);
         _filename = filename;
@@ -91,35 +94,33 @@ public void saveAs(String filename) throws IOException {
       _modified = true;
   }
 
-  public void alterInvWork(int number, int workId) { 
+  public void alterInvWork(int number, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore { 
       _library.alterInvWork(number, workId); 
       _modified = true;
   }
 
-  public String listWork(int workId) throws NoSuchWorkExceptionCore { 
-      return _library.listWork(workId); 
-  }
+  public String listWork(int workId) throws NoSuchWorkExceptionCore { return _library.listWork(workId); }
 
-  public String listWorks() { 
-      return _library.listWorks(); 
-  }
 
-  public String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore { 
-      return _library.listWorksByCreators(name); 
-  }
+  public String listWorks() { return _library.listWorks(); }
+
+
+  public String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore { return _library.listWorksByCreators(name); }
+
+
+  public String performSearch(String search){return _library.performSearch(search);}
+
 
   public int registerUser(String name, String email) { 
       _modified = true;
       return _library.registerUser(name, email); 
   }
 
-  public String listUser(int userId) throws NoSuchUserExceptionCore { 
-      return _library.listUser(userId); 
-  }
+  public String listUser(int userId) throws NoSuchUserExceptionCore { return _library.listUser(userId); }
 
-  public String listUsers() { 
-      return _library.listUsers(); 
-  }
+
+  public String listUsers() { return _library.listUsers(); }
+  
 
   public void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type) {
       _library.registerDvd(igac, creator, title, price, numberOfCopies, type);
@@ -137,8 +138,6 @@ public void saveAs(String filename) throws IOException {
       return _library.registerCreator(name);
   }
 
-  public boolean isModified(){
-    return _modified;
-  }
+  public boolean isModified(){return _modified;}
 
 }

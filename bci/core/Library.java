@@ -2,19 +2,18 @@ package bci.core;
 
 import java.io.*;
 
-import bci.core.exception.NoSuchCreatorExceptionCore;
-import bci.core.exception.NoSuchUserExceptionCore;
-import bci.core.exception.NoSuchWorkExceptionCore;
-import bci.core.exception.UnrecognizedEntryException;
+import bci.core.exception.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Collections;
 
 
 public class Library implements Serializable {
   private List<Work> _listOfWorks;
-  private List<Creator> _listOfCreators;
+  private Set<Creator> _setOfCreators;
   private List<User> _listOfUsers;
   private int _currentDay;
   private int _nextWorkId;
@@ -42,7 +41,7 @@ public class Library implements Serializable {
  * Initializes the lists of creators, works, and users, and sets the initial values for user ID, work ID, and current day.
  */
   Library(){
-    _listOfCreators = new ArrayList<>();
+    _setOfCreators = new LinkedHashSet<>();
     _listOfWorks = new ArrayList<>();
     _listOfUsers = new ArrayList<>();
     _nextUserId = _nextWorkId = _currentDay = 1;
@@ -65,7 +64,9 @@ public class Library implements Serializable {
    * @return a {@link List} of {@link Creator} objects representing all creators in the library
    */
 
-  List<Creator> getListOfCreators() {return Collections.unmodifiableList(_listOfCreators);}
+  List<Creator> getListOfCreators() {
+    return Collections.unmodifiableList(new ArrayList<>(_setOfCreators));
+  }
 
   /**
    * Returns the list of users registered in the library.
@@ -107,6 +108,7 @@ public class Library implements Serializable {
     return sb.toString();
   }
 
+
   /**
  * Returns a formatted list of all works created by the given creator,
  * sorted alphabetically by title (case-insensitive).
@@ -118,20 +120,37 @@ public class Library implements Serializable {
   String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore {
     List<Work> works = new ArrayList<>();
 
-    for (Creator c : _listOfCreators)
-        if (c.getName().equals(name))
-            works.addAll(c.getWorkList());
+    for (Creator c : _setOfCreators)
+      if (c.getName().equals(name))
+        works.addAll(c.getWorkList());
 
     if (works.isEmpty())
-        throw new NoSuchCreatorExceptionCore(name);
+      throw new NoSuchCreatorExceptionCore(name);
 
     works.sort(Comparator.comparing(w -> w.getTitle().toLowerCase()));
 
     StringBuilder sb = new StringBuilder();
     for (Work w : works)
-        sb.append(w).append("\n");
+      sb.append(w).append("\n");
 
     return sb.toString();
+  }
+  
+  String performSearch(String search){
+    _listOfWorks.sort(Comparator.comparingInt(Work::getWorkId));
+    String searchLower = search.trim().toLowerCase();
+    StringBuilder sb = new StringBuilder();
+    boolean found = false;
+
+    for (Work w : _listOfWorks){
+        String workStr = w.toString();
+        if (workStr.toLowerCase().contains(searchLower)){
+            sb.append(workStr).append("\n");
+            found = true;
+        }
+    }
+    if(found){return sb.toString();}
+    return null;
   }
 
 
@@ -148,25 +167,26 @@ public class Library implements Serializable {
    * @param work the {@link Work} to verify and potentially remove from the library
    */
 
-  void verify(Work work){
-    if(work.getNumberOfCopies() == 0){
+  void verify(Work work) {
+    if (work.getNumberOfCopies() == 0) {
       _listOfWorks.remove(work);
     }
-    if(work instanceof Book){
-      Book workb = (Book)work;
-      for(Creator c: workb.getCreators()){
-        if(c.getWorkList().isEmpty()){
-          _listOfCreators.remove(c);
+
+    if (work instanceof Book) {
+      Book workb = (Book) work;
+      for (Creator c : workb.getCreators()) {
+        if (c.getWorkList().isEmpty()) {
+          _setOfCreators.remove(c);  // <-- Alterado
         }
       }
-    }
-    else{
-      Dvd workd = (Dvd)work;
-      if(workd.getCreator().getWorkList().isEmpty()){
-        _listOfCreators.remove(workd.getCreator());
+    } else {
+      Dvd workd = (Dvd) work;
+      if (workd.getCreator().getWorkList().isEmpty()) {
+        _setOfCreators.remove(workd.getCreator()); // <-- Alterado
       }
     }
   }
+  
 
   /**
  * Alters the inventory of a work by its ID.
@@ -178,23 +198,29 @@ public class Library implements Serializable {
  * @param number the amount to change the number of copies (positive to add, negative to remove)
  * @param workId the unique identifier of the work to alter
  */
-  void alterInvWork(int number, int workId){
-    for(Work w : _listOfWorks){
-      if(w.getWorkId() == workId){
-        int numberOfCopies = w.getNumberOfCopies();
-        if(number > 0)
-            numberOfCopies += number;
-        else{
-            if(numberOfCopies <= number){
-                numberOfCopies = 0;
-                verify(w);
-            }
-            else
-              numberOfCopies -= number;
+  void alterInvWork(int number, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore {
+    for (Work w : _listOfWorks) {
+      if (w.getWorkId() == workId) {
+        int current = w.getNumberOfCopies();
+
+        if (number < 0) {
+          int remove = -number;
+          if (current < remove)
+            throw new NotEnoughInventoryExceptionCore(w.getTitle());
+          w.setNumberOfCopies(current - remove);
+          if (w.getNumberOfCopies() == 0) {
+            verify(w);
+          }
+        } else { 
+          w.setNumberOfCopies(current + number);
         }
+        return;
       }
     }
+
+    throw new NoSuchWorkExceptionCore(workId);
   }
+
 
 /**
  * Registers a new DVD in the system.
@@ -239,10 +265,15 @@ void registerBook(String isbn, int price, String title, int numberOfCopies, List
  * @return The created {@link Creator} object.
  */
 Creator registerCreator(String name) {
+    for (Creator c : _setOfCreators) {
+      if (c.getName().equals(name))
+        return c;
+    }
+
     Creator newCreator = new Creator(name);
-    _listOfCreators.add(newCreator);
+    _setOfCreators.add(newCreator);
     return newCreator;
-}
+  }
 
 
   //Time

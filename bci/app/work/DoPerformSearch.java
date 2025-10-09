@@ -11,12 +11,12 @@ class DoPerformSearch extends Command<LibraryManager> {
 
   DoPerformSearch(LibraryManager receiver) {
     super(Label.PERFORM_SEARCH, receiver);
-    //FIXME add command fields
+    addStringField("search", Prompt.searchTerm());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   protected final void execute() {
-    //FIXME implement command
+    _display.popup(_receiver.performSearch(stringField("search")));
   }
 }

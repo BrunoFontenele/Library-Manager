@@ -27,6 +27,8 @@ class DoSaveFile extends Command<LibraryManager> {
 
                 try {
                     _receiver.saveAs(filename);
+                } catch (MissingFileAssociationException mfaEx) {
+                    _display.popup("Erro: associação de ficheiro em falta");
                 } catch (IOException ioEx) {
                     _display.popup("Erro ao guardar a biblioteca");
                 }
