@@ -9,10 +9,12 @@ public class Library implements Serializable {
     private Map<Integer, Work> _worksById;
     private Map<Integer, User> _usersById;
     private Map<String, Creator> _creatorsByName;
+    private Map<Integer, Request> _requestById;
 
     private int _currentDay;
     private int _nextWorkId;
     private int _nextUserId;
+    private int _nextRequestId;
 
     /** Serial number for serialization. */
     @Serial
@@ -27,7 +29,8 @@ public class Library implements Serializable {
         _worksById = new LinkedHashMap<>();
         _usersById = new LinkedHashMap<>();
         _creatorsByName = new LinkedHashMap<>();
-        _nextUserId = _nextWorkId = _currentDay = 1;
+        _requestById = new LinkedHashMap<>();
+        _nextUserId = _nextWorkId = _currentDay = _nextRequestId = 1;
     }
 
     // ---------- GETTERS ----------
@@ -45,7 +48,7 @@ public class Library implements Serializable {
 
     // ---------- WORK HELPERS ----------
     private void addWorkInternal(Work work) {
-        _worksById.put(work.getWorkId(), work);
+      _worksById.put(work.getWorkId(), work);
     }
 
     private void removeWorkInternal(Work work) {
@@ -214,12 +217,18 @@ public class Library implements Serializable {
 
     String listUsers() {
         List<User> copy = new ArrayList<>(_usersById.values());
-        copy.sort(Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER)
-                            .thenComparingInt(User::getUserId));
+        copy.sort(Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER).thenComparingInt(User::getUserId));
 
         StringBuilder sb = new StringBuilder();
         for (User u : copy)
             sb.append(u.toString()).append("\n");
         return sb.toString();
     }
+
+
+  //------------Requisitions-------------
+
+  void requestWork(int userId, int workId){
+
+  }
 }

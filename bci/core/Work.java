@@ -3,7 +3,7 @@ package bci.core;
 import java.io.Serializable;
 
 abstract class Work implements Serializable {
-    private int _workId;
+    private final int _workId;
     private String _title;
     private int _price;
     private int _numberOfCopies;

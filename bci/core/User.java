@@ -3,7 +3,7 @@ package bci.core;
 import java.io.Serializable;
 
 class User implements Serializable{
-    private int _id;
+    private final int _id;
     private boolean _isActive;
     private String _name;
     private String _email;

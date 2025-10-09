@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Iterator;
 
 class Creator implements Serializable{
-    private String _name;
+    private final String _name;
     private List<Work> _workList;
 
     Creator(String name){
