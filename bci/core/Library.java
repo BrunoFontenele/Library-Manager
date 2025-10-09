@@ -59,7 +59,7 @@ public class Library implements Serializable {
         if (work instanceof Book) {
             Book book = (Book) work;
             for (Creator c : book.getCreators()) {
-                c.getWorkList().remove(work);
+                c.removeWork(work.getWorkId());
                 if (c.getWorkList().isEmpty()) {
                     _creatorsByName.remove(c.getName());
                 }
@@ -68,7 +68,7 @@ public class Library implements Serializable {
             Dvd dvd = (Dvd) work;
             Creator creator = dvd.getCreator();
             if (creator != null) {
-                creator.getWorkList().remove(work);
+                creator.removeWork(work.getWorkId());
                 if (creator.getWorkList().isEmpty()) {
                     _creatorsByName.remove(creator.getName());
                 }
