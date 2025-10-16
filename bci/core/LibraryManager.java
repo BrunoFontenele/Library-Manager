@@ -46,11 +46,8 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
     if (filename == null || filename.isBlank()) {
         throw new MissingFileAssociationException();
     }
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-        out.writeObject(_library);
-        _filename = filename;
-        _modified = false;
-    }
+    _filename = filename;
+    save(); //checar com a Bia  
 }
 
 

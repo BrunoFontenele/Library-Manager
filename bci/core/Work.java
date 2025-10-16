@@ -7,7 +7,7 @@ abstract class Work implements Serializable {
     private String _title;
     private int _price;
     private int _numberOfCopies;
-    private int _AvailableCopies;
+    private int _availableCopies;
     private Category _category;
 
     Work(String title, int price, int numberOfCopies, Category category, int nextWorkId){

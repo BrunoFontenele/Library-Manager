@@ -5,7 +5,7 @@ import pt.tecnico.uilib.menus.CommandException;
 /**
  * Class encoding reference to an invalid user id.
  */
-public class NoSuchUserExceptionCore extends CommandException {
+public class NoSuchUserExceptionCore extends Exception{
 
   @java.io.Serial
   private static final long serialVersionUID = 202501091828L;

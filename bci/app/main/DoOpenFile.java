@@ -1,6 +1,9 @@
 package bci.app.main;
 
 import bci.core.LibraryManager;
+
+import java.io.IOException;
+
 import bci.app.exception.FileOpenFailedException;
 import bci.core.exception.UnavailableFileException;
 import pt.tecnico.uilib.forms.Form;
@@ -21,7 +24,7 @@ class DoOpenFile extends Command<LibraryManager> {
         if (Form.confirm(Prompt.saveBeforeExit())) {
           try {
             _receiver.save();
-          } catch (Exception ioe) {
+          } catch (UnavailableFileException | IOException ioe){
             throw new FileOpenFailedException(ioe);
           }
         }
