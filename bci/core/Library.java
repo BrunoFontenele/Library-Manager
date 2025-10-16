@@ -55,25 +55,7 @@ public class Library implements Serializable {
         if (work == null) return;
 
         _worksById.remove(work.getWorkId());
-
-        if (work instanceof Book) {
-            Book book = (Book) work;
-            for (Creator c : book.getCreators()) {
-                c.removeWork(work.getWorkId());
-                if (c.getWorkList().isEmpty()) {
-                    _creatorsByName.remove(c.getName());
-                }
-            }
-        } else if (work instanceof Dvd) {
-            Dvd dvd = (Dvd) work;
-            Creator creator = dvd.getCreator();
-            if (creator != null) {
-                creator.removeWork(work.getWorkId());
-                if (creator.getWorkList().isEmpty()) {
-                    _creatorsByName.remove(creator.getName());
-                }
-            }
-        }
+        work.removeWork();
     }
 
     private Work getWorkById(int workId) {
@@ -224,6 +206,12 @@ public class Library implements Serializable {
             sb.append(u.toString()).append("\n");
         return sb.toString();
     }
+
+  //------------Creators-------------
+
+  void removeCreator(String name){
+    _creatorsByName.remove(name);
+  }
 
 
   //------------Requisitions-------------

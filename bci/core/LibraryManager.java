@@ -60,7 +60,7 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
   public void load(String filename) throws UnavailableFileException {
       try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
           Object obj = in.readObject();
-          if (!(obj instanceof Library)) 
+          if (!(obj instanceof Library)) //checagem desnecessaia. Prof
               throw new UnavailableFileException(filename);
           _library = (Library) obj;
           _filename = filename;

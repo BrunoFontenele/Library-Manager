@@ -13,7 +13,7 @@ abstract class Work implements Serializable {
     Work(String title, int price, int numberOfCopies, Category category, int nextWorkId){
         _workId = nextWorkId;
         _title = title;
-        _numberOfCopies = _AvailableCopies = numberOfCopies;
+        _numberOfCopies = _availableCopies = numberOfCopies;
         _price = price;
         _category = category;
     }
@@ -22,7 +22,7 @@ abstract class Work implements Serializable {
 
     int getNumberOfCopies() {return _numberOfCopies;}
 
-    int getAvailableCopies() {return _AvailableCopies;}
+    int getAvailableCopies() {return _availableCopies;}
 
     String getTitle() {return _title;}
 
@@ -31,6 +31,8 @@ abstract class Work implements Serializable {
     abstract String getType();
 
     abstract String getAdInfo();
+
+    abstract void removeWork();
 
     void setNumberOfCopies(int _numberOfCopies) { this._numberOfCopies = _numberOfCopies; }
 
@@ -43,6 +45,6 @@ abstract class Work implements Serializable {
     @Override
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-            _workId, _numberOfCopies, _AvailableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
+            _workId, _numberOfCopies, _availableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
 }
