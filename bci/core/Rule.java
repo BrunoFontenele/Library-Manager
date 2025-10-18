@@ -27,7 +27,7 @@ class CheckRequestTwice extends Rule{
             return;
         for(Request request : userRequests){
             if(request.get_workId() == work.getWorkId())
-                throw new CouldNotRequestException();
+                throw new CouldNotRequestException(1);
         }
     }
 }
@@ -39,7 +39,7 @@ class CheckActiveUser extends Rule{
 
     void check(Work work, User user) throws CouldNotRequestException{
         if(!user.isActive())
-            throw new CouldNotRequestException();
+            throw new CouldNotRequestException(2);
     }
 }
 
@@ -50,7 +50,7 @@ class CheckInventory extends Rule{
 
     void check(Work work, User user) throws NotEnoughInventoryExceptionCore{ //Para as notificacoes
         if(work.getAvailableCopies() < 1)
-            throw new NotEnoughInventoryExceptionCore();
+            throw new NotEnoughInventoryExceptionCore(3);
     }
 }
 
@@ -61,7 +61,7 @@ class CheckNumberRequisitions extends Rule{
 
     void check(Work work, User user) throws CouldNotRequestException{
         if(user.getActiveNumReq()+1 > user.getBehavior().getMaxReq())
-            throw new CouldNotRequestException();
+            throw new CouldNotRequestException(4);
     }
 }
 
@@ -72,7 +72,7 @@ class CheckCategory extends Rule{
 
     void check(Work work, User user) throws CouldNotRequestException{
         if(work.getCategoryString().equals("Referência"))
-            throw new CouldNotRequestException();
+            throw new CouldNotRequestException(5);
     }
 }
 
@@ -85,7 +85,7 @@ class CheckPrice extends Rule{
     void check(Work work, User user) throws CouldNotRequestException{
         if (user.getBehavior() == UserBehavior.Cumpridor) return; // dar fix nisto
 
-        if(work.getPrice()>25) throw new CouldNotRequestException();
+        if(work.getPrice()>25) throw new CouldNotRequestException(6);
     }
 }
 

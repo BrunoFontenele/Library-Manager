@@ -138,10 +138,14 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
   public boolean isModified(){return _modified;}
 
 
-  public int requestWork(User user, Work work) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
-    int res = _library.requestWork(user, work);
+  public int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
+    int res = _library.requestWork(userId, workId);
     _modified = true;
     return res;
+  }
+
+  public int getRuleError(CouldNotRequestException e){
+    return e.getError();
   }
 }
 

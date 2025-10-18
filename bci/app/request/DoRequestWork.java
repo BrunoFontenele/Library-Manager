@@ -20,8 +20,8 @@ class DoRequestWork extends Command<LibraryManager> {
 
   DoRequestWork(LibraryManager receiver) {
     super(Label.REQUEST_WORK, receiver);
-    addStringField("userID", Prompt.userID());
-    addStringField("WorkID", Prompt.workID());
+    addIntegerField("userID", bci.app.user.Prompt.userId());
+    addIntegerField("workID", bci.app.work.Prompt.workId());
   }
 
   @Override
@@ -30,13 +30,13 @@ class DoRequestWork extends Command<LibraryManager> {
     int workId = integerField("workID");
 
     try{
-      _display.popup(Message.workReturnDay(_receiver.requestWork(userId, workId)));
+      _display.popup(bci.app.request.Message.workReturnDay(workId, _receiver.requestWork(userId, workId)));
     }catch(CouldNotRequestException e){
-      throw new BorrowingRuleFailedException(e);
+      int ruleId = _receiver.getError(e);
+      throw new BorrowingRuleFailedException(userId, workId, ruleId);
     }catch(NotEnoughInventoryExceptionCore er){
-      if(Form.confirm(Prompt.returnNotificationPreference()))
+      if(Form.confirm(Prompt.returnNotificationPreference())){}
         //notificacao
-        throw new BorrowingRuleFailedException(er);
     }
   }
 }

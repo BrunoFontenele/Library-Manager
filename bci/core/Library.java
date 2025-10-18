@@ -225,12 +225,12 @@ public class Library implements Serializable {
     _ruleChecker.checkRules(work, user);
 
     Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getAvailableCopies()));
-    if(_requestByUser(user) == null){
+    if(_requestByUser.get(user) == null){
         List<Request> requests = new ArrayList<>();
         requests.add(request);
         _requestByUser.put(user, requests);
     }
-    else _requestByUser(user).add(request);
+    else _requestByUser.get(user).add(request);
 
     user.alterActiveReqNum(1);
 
