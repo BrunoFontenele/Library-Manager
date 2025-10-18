@@ -1,8 +1,7 @@
 package bci.core.exception;
 
-import bci.core.exception.CoreRuleException;
 
-public class NotEnoughInventoryExceptionCore extends CoreRuleException {
+public class NotEnoughInventoryExceptionCore extends Exception {
 
     private static final long serialVersionUID = 20251009L;
 
