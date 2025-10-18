@@ -3,6 +3,7 @@ package bci.core;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 class Dvd extends Work{
@@ -25,10 +26,11 @@ class Dvd extends Work{
         return _creator.getName() + " - " + _igac;
     }
 
-    Creator listCreators() {
+    @Override
+    List<Creator> listCreators() {
         List<Creator> creator = new ArrayList<>();
         creator.add(_creator);
-        return Collection.unmodifiableList(creator);
+        return Collections.unmodifiableList(creator);
     }
 
     String getIgac(){return _igac;}

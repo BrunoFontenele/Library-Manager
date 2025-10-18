@@ -1,6 +1,9 @@
 package bci.core;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 class User implements Serializable{
     private final int _id;
@@ -9,7 +12,7 @@ class User implements Serializable{
     private String _email;
     private int _fine;
     private UserBehavior _behavior;
-    private int _activeReqNumber;
+    private List<Request> _userRequests;
 
     User(String name, String email, int nextUserId){
         _id = nextUserId;
@@ -18,12 +21,7 @@ class User implements Serializable{
         _email = email;
         _fine = 0;
         _behavior = Normal.getNormalBehavior();
-        _activeReqNumber = 0;
-    }
-
-    void alterActiveReqNum(int num){
-        if(num == -1 && _activeReqNumber != 0) _activeReqNumber--;
-        else if(num == 1) _activeReqNumber++;
+        userRequests = new ArrayList<>();
     }
 
     void setBehavior(UserBehavior newBehavior){
@@ -42,10 +40,19 @@ class User implements Serializable{
 
     String getName(){return _name;}
 
-    int getActiveNumReq(){return _activeReqNumber;}
+    int getActiveNumReq(){
+        return _userRequests.size();
+    }
 
     UserBehavior getBehavior() {return _behavior;}
 
+    List<Request> getUserRequests(){
+        return Collections.unmodifiableList(_userRequests);
+    }
+
+    void addUserRequest(Request request){
+        _userRequests.add(request);
+    }
 
     public String toString(){
         if(_fine == 0)

@@ -29,6 +29,7 @@ class Book extends Work{
         return String.join(";", creatorNames) + " - " + _isbn;
     }
 
+    @Override
     List<Creator> listCreators() {
         return Collections.unmodifiableList(_creators);
     }

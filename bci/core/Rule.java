@@ -22,8 +22,8 @@ class CheckRequestTwice extends Rule{
     }   
 
     void check(Work work, User user) throws CouldNotRequestException{
-        List<Request> userRequests = _requestById(user.getUserId());
-        if(userRequests == null)
+        List<Request> userRequests = user.getUserRequests();
+        if(userRequests.isEmpty())
             return;
         for(Request request : userRequests){
             if(request.get_workId() == work.getWorkId())

@@ -233,7 +233,7 @@ public class Library implements Serializable {
     }
     else _requestByUser.get(user).add(request);
 
-    user.alterActiveReqNum(1);
+    user.addUserRequest(request);
 
     return request.get_endOfRequest();
   }

@@ -1,6 +1,7 @@
 package bci.core;
 
 import java.io.Serializable;
+import java.util.List;
 
 abstract class Work implements Serializable {
     private final int _workId;
