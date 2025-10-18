@@ -13,5 +13,21 @@ class Request {
         _endOfRequest = endOfRequest;
     }
 
+    int get_userId() {
+        return _userId;
+    }
+
+    int get_workId() {
+        return _workId;
+    }
+
+    int get_requestid() {
+        return _requestid;
+    }
+
+    int get_endOfRequest() {
+        return _endOfRequest;
+    }
+    
 
 }

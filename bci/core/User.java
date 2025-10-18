@@ -9,6 +9,7 @@ class User implements Serializable{
     private String _email;
     private int _fine;
     private UserBehavior _behavior;
+    private int _activeReqNumber;
 
     User(String name, String email, int nextUserId){
         _id = nextUserId;
@@ -16,24 +17,43 @@ class User implements Serializable{
         _name = name;
         _email = email;
         _fine = 0;
-        _behavior = UserBehavior.NORMAL;
+        _behavior = Normal.getNormalBehavior();
+        _activeReqNumber = 0;
     }
 
-    String isActive() {
-        if(_isActive) return "ACTIVO";
-        return "SUSPENSO";
+    void alterActiveReqNum(int num){
+        if(num < 0 && _activeReqNumber != 0) _activeReqNumber -= 1; 
+        else{
+            _activeReqNumber += 1;
+        }
+    }
+
+    void setBehavior(Behavior newBehavior){
+        _behavior = newBehavior;
+    }
+
+    void setActive(){
+        _isActive = !_isActive;
+    }
+
+    Boolean isActive() {
+        return _isActive;
     }
 
     int getUserId(){return _id;}
 
     String getName(){return _name;}
 
+    int getActiveNumReq(){return _activeReqNumber;}
+
+    UserBehavior getBehavior() {return _behavior;}
+
 
     public String toString(){
         if(_fine == 0)
             return String.format("%d - %s - %s - %s - %s",
-            _id, _name, _email, _behavior, isActive());
+            _id, _name, _email, _behavior, _isActive? "ACTIVO":"SUSPENSO");
         return String.format("%d - %s - %s - %s - %s - %s %d",
-        _id, _name, _email, _behavior, isActive(), "EUR", _fine);
+        _id, _name, _email, _behavior, _isActive? "ACTIVO":"SUSPENSO" , "EUR", _fine);
     }
 }

@@ -10,11 +10,14 @@ public class Library implements Serializable {
     private Map<Integer, User> _usersById;
     private Map<String, Creator> _creatorsByName;
     private Map<Integer, Request> _requestById;
+    private Map<User, List<Request>> _requestByUser;
 
     private int _currentDay;
     private int _nextWorkId;
     private int _nextUserId;
     private int _nextRequestId;
+
+    private RuleChecker _ruleChecker;
 
     /** Serial number for serialization. */
     @Serial
@@ -30,7 +33,9 @@ public class Library implements Serializable {
         _usersById = new LinkedHashMap<>();
         _creatorsByName = new LinkedHashMap<>();
         _requestById = new LinkedHashMap<>();
+        _requestByUser = new HashMap<>();
         _nextUserId = _nextWorkId = _currentDay = _nextRequestId = 1;
+        _ruleChecker = new RuleChecker();
     }
 
     // ---------- GETTERS ----------
@@ -216,7 +221,12 @@ public class Library implements Serializable {
 
   //------------Requisitions-------------
 
-  void requestWork(int userId, int workId){
+  int requestWork(int userId, int workId) throws CouldNotRequestException{
+    User user = _usersById.get(userId);
+    Work work = _worksById.get(workId);
 
+    _ruleChecker.checkRules(work, user);
+
+    
   }
 }
