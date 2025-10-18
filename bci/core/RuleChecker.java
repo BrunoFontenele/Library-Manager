@@ -23,13 +23,8 @@ class RuleChecker {
         rules.sort((a,b) -> Integer.compare(a.getId(), b.getId()));
     }
 
-    void checkRules(Work work, User user) throws CouldNotRequestException{
-        try{
-            for(Rule rule : rules)
-                rule.check(work, user);
-        } catch (NotEnoughInventoryExceptionCore e) {
-            //notificacao
-            throw new CouldNotRequestException();
-        }
+    void checkRules(Work work, User user) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
+        for(Rule rule : rules)
+            rule.check(work, user);
     }
 }

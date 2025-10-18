@@ -218,7 +218,7 @@ public class Library implements Serializable {
 
   //------------Requisitions-------------
 
-  int requestWork(int userId, int workId) throws CouldNotRequestException{
+  int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
     User user = _usersById.get(userId);
     Work work = _worksById.get(workId);
 
@@ -233,5 +233,7 @@ public class Library implements Serializable {
     else _requestByUser(user).add(request);
 
     user.alterActiveReqNum(1);
+
+    return request.get_endOfRequest();
   }
 }
