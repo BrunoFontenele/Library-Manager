@@ -9,7 +9,7 @@ public class Library implements Serializable {
     private Map<Integer, Work> _worksById;
     private Map<Integer, User> _usersById;
     private Map<String, Creator> _creatorsByName;
-    private Map<User, List<Request>> _requestByUser;
+    private Map<User, List<Request>> _requestByUser; //mudar isso, os utentes ja guardam as proprias request
 
     private int _currentDay;
     private int _nextWorkId;
@@ -30,9 +30,9 @@ public class Library implements Serializable {
         _worksById = new LinkedHashMap<>();
         _usersById = new LinkedHashMap<>();
         _creatorsByName = new LinkedHashMap<>();
-        _requestByUser = new HashMap<>();
+        _requestByUser = new HashMap<>(); 
         _nextUserId = _nextWorkId = _currentDay = 1;
-        _ruleChecker = new RuleChecker();
+        _ruleChecker = new RuleChecker(); 
     }
 
     // ---------- GETTERS ----------

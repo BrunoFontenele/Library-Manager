@@ -1,5 +1,6 @@
 package bci.core.exception;
 
+import bci.core.exception.CoreRuleException;
 import pt.tecnico.uilib.menus.CommandException;
 
 public class CouldNotRequestException extends CoreRuleException{
@@ -8,6 +9,7 @@ public class CouldNotRequestException extends CoreRuleException{
     private int error;
 
     public CouldNotRequestException(int errorId){
+         super(); // Explicitly call the superclass constructor
          error = errorId;
     }
 
