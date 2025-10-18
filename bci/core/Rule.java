@@ -12,7 +12,7 @@ abstract class Rule {
 
     protected int getId(){return _ruleId;}
 
-    abstract void check(Work work, User user) throws Exception;
+    abstract void check(Work work, User user) throws CoreRuleException;
 
 }
 
@@ -21,7 +21,7 @@ class CheckRequestTwice extends Rule{
         super(id);
     }   
 
-    void check(Work work, User user) throws CouldNotRequestException{
+    void check(Work work, User user) throws CoreRuleException{
         List<Request> userRequests = user.getUserRequests();
         if(userRequests.isEmpty())
             return;
@@ -37,7 +37,7 @@ class CheckActiveUser extends Rule{
         super(id);
     }   
 
-    void check(Work work, User user) throws CouldNotRequestException{
+    void check(Work work, User user) throws CoreRuleException{
         if(!user.isActive())
             throw new CouldNotRequestException(2);
     }
@@ -48,9 +48,9 @@ class CheckInventory extends Rule{
         super(id);
     }
 
-    void check(Work work, User user) throws NotEnoughInventoryExceptionCore{ //Para as notificacoes
+    void check(Work work, User user) throws CoreRuleException{ //Para as notificacoes
         if(work.getAvailableCopies() < 1)
-            throw new NotEnoughInventoryExceptionCore(3);
+            throw new NotEnoughInventoryExceptionCore();
     }
 }
 
@@ -59,7 +59,7 @@ class CheckNumberRequisitions extends Rule{
         super(id);
     }
 
-    void check(Work work, User user) throws CouldNotRequestException{
+    void check(Work work, User user) throws CoreRuleException{
         if(user.getActiveNumReq()+1 > user.getBehavior().getMaxReq())
             throw new CouldNotRequestException(4);
     }
@@ -70,7 +70,7 @@ class CheckCategory extends Rule{
         super(id);
     }
 
-    void check(Work work, User user) throws CouldNotRequestException{
+    void check(Work work, User user) throws CoreRuleException{
         if(work.getCategoryString().equals("Referência"))
             throw new CouldNotRequestException(5);
     }
@@ -82,8 +82,8 @@ class CheckPrice extends Rule{
         super(id);
     }
 
-    void check(Work work, User user) throws CouldNotRequestException{
-        if (user.getBehavior() == UserBehavior.Cumpridor) return; // dar fix nisto
+    void check(Work work, User user) throws CoreRuleException{
+        if (user.getBehavior() == Cumpridor.getCumpridorBehavior()) return; // dar fix nisto
 
         if(work.getPrice()>25) throw new CouldNotRequestException(6);
     }

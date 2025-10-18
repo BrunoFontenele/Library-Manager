@@ -23,7 +23,7 @@ public class LibraryManager {
  * @throws UnavailableFileException If no file name is set.
  * @throws IOException If an error occurs while writing the file.
  */
-public void save() throws UnavailableFileException, IOException {
+public void save() throws UnavailableFileException, IOException, UnavailableFileException{
     if (_filename == null || _filename.isBlank()) {
         throw new UnavailableFileException(_filename);
     }
@@ -42,7 +42,7 @@ public void save() throws UnavailableFileException, IOException {
  * @param filename The name of the file to save to.
  * @throws IOException If an error occurs while writing the file.
  */
-public void saveAs(String filename) throws IOException, MissingFileAssociationException {
+public void saveAs(String filename) throws IOException, MissingFileAssociationException, UnavailableFileException{
     if (filename == null || filename.isBlank()) {
         throw new MissingFileAssociationException();
     }

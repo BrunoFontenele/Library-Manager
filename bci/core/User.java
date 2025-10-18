@@ -21,7 +21,7 @@ class User implements Serializable{
         _email = email;
         _fine = 0;
         _behavior = Normal.getNormalBehavior();
-        userRequests = new ArrayList<>();
+        _userRequests = new ArrayList<>();
     }
 
     void setBehavior(UserBehavior newBehavior){

@@ -2,7 +2,7 @@ package bci.core.exception;
 
 import pt.tecnico.uilib.menus.CommandException;
 
-public class NoSuchWorkExceptionCore extends Exception{
+public class NoSuchWorkExceptionCore extends CoreRuleException{
     
     /**
      * Class encoding reference to an invalid work id.
