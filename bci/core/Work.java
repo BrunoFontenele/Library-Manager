@@ -32,7 +32,7 @@ abstract class Work implements Serializable {
 
     abstract String getAdInfo();
 
-    abstract void removeWork();
+    abstract List<Creator> listCreators();
 
     void setNumberOfCopies(int _numberOfCopies) { this._numberOfCopies = _numberOfCopies; }
 

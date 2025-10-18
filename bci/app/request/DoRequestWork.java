@@ -32,8 +32,7 @@ class DoRequestWork extends Command<LibraryManager> {
     try{
       _display.popup(bci.app.request.Message.workReturnDay(workId, _receiver.requestWork(userId, workId)));
     }catch(CouldNotRequestException e){
-      int ruleId = _receiver.getError(e);
-      throw new BorrowingRuleFailedException(userId, workId, ruleId);
+      throw new BorrowingRuleFailedException(userId, workId, _receiver.getRuleError(e));
     }catch(NotEnoughInventoryExceptionCore er){
       if(Form.confirm(Prompt.returnNotificationPreference())){}
         //notificacao

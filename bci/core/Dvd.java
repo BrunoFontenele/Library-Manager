@@ -1,5 +1,9 @@
 package bci.core;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
 
 class Dvd extends Work{
     private String _igac;
@@ -21,15 +25,12 @@ class Dvd extends Work{
         return _creator.getName() + " - " + _igac;
     }
 
-    Creator getCreator() {
-        return _creator;
+    Creator listCreators() {
+        List<Creator> creator = new ArrayList<>();
+        creator.add(_creator);
+        return Collection.unmodifiableList(creator);
     }
 
     String getIgac(){return _igac;}
 
-    void removeWork(Work work){
-        _creator.removeWork(work.getWorkId());
-        if (_creator.getWorkList().isEmpty())
-            removeCreator(_creator.getName());
-    }
 }

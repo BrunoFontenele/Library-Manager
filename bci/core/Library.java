@@ -57,7 +57,7 @@ public class Library implements Serializable {
         if (work == null) return;
 
         _worksById.remove(work.getWorkId());
-        work.removeWork();
+        removeCreators(work.listCreators());
     }
 
     private Work getWorkById(int workId) {
@@ -211,8 +211,9 @@ public class Library implements Serializable {
 
   //------------Creators-------------
 
-  void removeCreator(String name){
-    _creatorsByName.remove(name);
+  void removeCreators(List<Creator> creators){
+    for(Creator creator : creators)
+        _creatorsByName.remove(creator.getName());
   }
 
 

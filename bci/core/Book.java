@@ -29,16 +29,9 @@ class Book extends Work{
         return String.join(";", creatorNames) + " - " + _isbn;
     }
 
-    List<Creator> getCreators() {
+    List<Creator> listCreators() {
         return Collections.unmodifiableList(_creators);
     }
 
     String getIsbn(){return _isbn;}
-
-    void removeWork(Work work){
-        for(Creator c : _creators)
-            c.removeWork(work.getWorkId());
-            if (c.getWorkList().isEmpty())
-                removeCreator(c.getName());
-    }
 }
