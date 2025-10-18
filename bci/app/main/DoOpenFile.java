@@ -24,7 +24,7 @@ class DoOpenFile extends Command<LibraryManager> {
         if (Form.confirm(Prompt.saveBeforeExit())) {
           try {
             _receiver.save();
-          } catch (UnavailableFileException | IOException ioe){
+          } catch (UnavailableFileException | IOException | UnavailableFileException ioe){
             throw new FileOpenFailedException(ioe);
           }
         }
