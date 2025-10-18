@@ -1,6 +1,7 @@
 package bci.core;
 
-import bci.core.exception.NotEnoughInventoryExceptionCore;
+import bci.core.exception.*;
+import java.util.*;
 
 abstract class Rule {
     private final int _ruleId;
@@ -82,7 +83,7 @@ class CheckPrice extends Rule{
     }
 
     void check(Work work, User user) throws CouldNotRequestException{
-        if(user.getBehavior() == Cumpridor) return;
+        if (user.getBehavior() == UserBehavior.Cumpridor) return; // dar fix nisto
 
         if(work.getPrice()>25) throw new CouldNotRequestException();
     }

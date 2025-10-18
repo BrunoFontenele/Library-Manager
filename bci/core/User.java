@@ -26,7 +26,7 @@ class User implements Serializable{
         else if(num == 1) _activeReqNumber++;
     }
 
-    void setBehavior(Behavior newBehavior){
+    void setBehavior(UserBehavior newBehavior){
         _behavior = newBehavior;
     }
 

@@ -2,7 +2,6 @@ package bci.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Collections;
 
 class Book extends Work{
@@ -36,7 +35,7 @@ class Book extends Work{
 
     String getIsbn(){return _isbn;}
 
-    void removeWork(){
+    void removeWork(Work work){
         for(Creator c : _creators)
             c.removeWork(work.getWorkId());
             if (c.getWorkList().isEmpty())

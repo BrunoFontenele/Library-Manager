@@ -132,7 +132,7 @@ public class Library implements Serializable {
             work.setNumberOfCopies(current - remove);
             verify(work);
         } else {
-            work.setNumberOfCopies(current + number);
+            work.setNumberOfCopies(current + quantityChange); // acho q falta a verificação para caso passe do limite
         }
     }
 

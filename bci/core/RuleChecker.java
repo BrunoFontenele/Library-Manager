@@ -1,6 +1,9 @@
+package bci.core;
+
 import java.util.List;
 import java.util.ArrayList;
-import bci.core.exception.NotEnoughInventoryExceptionCore;
+import bci.core.exception.*;
+
 
 class RuleChecker {
     private List<Rule> rules;

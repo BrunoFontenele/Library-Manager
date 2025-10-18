@@ -1,3 +1,5 @@
+package bci.core.exception;
+
 import pt.tecnico.uilib.menus.CommandException;
 
 public class CouldNotRequestException extends Exception{

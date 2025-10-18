@@ -19,10 +19,6 @@ class Request {
         return _workId;
     }
 
-    int get_requestid() {
-        return _requestid;
-    }
-
     int get_endOfRequest() {
         return _endOfRequest;
     }
