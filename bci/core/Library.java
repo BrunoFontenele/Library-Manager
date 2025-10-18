@@ -9,13 +9,11 @@ public class Library implements Serializable {
     private Map<Integer, Work> _worksById;
     private Map<Integer, User> _usersById;
     private Map<String, Creator> _creatorsByName;
-    private Map<Integer, Request> _requestById;
     private Map<User, List<Request>> _requestByUser;
 
     private int _currentDay;
     private int _nextWorkId;
     private int _nextUserId;
-    private int _nextRequestId;
 
     private RuleChecker _ruleChecker;
 
@@ -32,9 +30,8 @@ public class Library implements Serializable {
         _worksById = new LinkedHashMap<>();
         _usersById = new LinkedHashMap<>();
         _creatorsByName = new LinkedHashMap<>();
-        _requestById = new LinkedHashMap<>();
         _requestByUser = new HashMap<>();
-        _nextUserId = _nextWorkId = _currentDay = _nextRequestId = 1;
+        _nextUserId = _nextWorkId = _currentDay = 1;
         _ruleChecker = new RuleChecker();
     }
 
@@ -227,6 +224,12 @@ public class Library implements Serializable {
 
     _ruleChecker.checkRules(work, user);
 
-    
+    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getAvailableCopies()));
+    if(_requestByUser(user) == null){
+        List<Request> requests = new ArrayList<>();
+        requests.add(request);
+        _requestByUser.put(user, requests);
+    }
+    else _requestByUser(user).add(request);
   }
 }
