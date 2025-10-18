@@ -1,5 +1,7 @@
 package bci.core;
 
+import java.util.Locale.Category;
+
 class Dvd extends Work{
     private String _igac;
     private Creator _creator;
@@ -25,4 +27,10 @@ class Dvd extends Work{
     }
 
     String getIgac(){return _igac;}
+
+    void removeWork(){
+        _creator.removeWork(work.getWorkId());
+        if (_creator.getWorkList().isEmpty())
+            removeCreator(_creator.getName());
+    }
 }

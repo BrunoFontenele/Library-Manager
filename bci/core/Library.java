@@ -119,18 +119,18 @@ public class Library implements Serializable {
         }
     }
 
-    void alterInvWork(int number, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore {
-        Work w = getWorkById(workId);
-        if (w == null) throw new NoSuchWorkExceptionCore(workId);
+    void alterInvWork(int quantityChange, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore {
+        Work work = getWorkById(workId);
+        if (work == null) throw new NoSuchWorkExceptionCore(workId);
 
-        int current = w.getNumberOfCopies();
-        if (number < 0) {
-            int remove = -number;
-            if (current < remove) throw new NotEnoughInventoryExceptionCore(w.getTitle());
-            w.setNumberOfCopies(current - remove);
-            if (w.getNumberOfCopies() == 0) verify(w);
+        int current = work.getNumberOfCopies();
+        if (quantityChange < 0){
+            int remove = -quantityChange;
+            if (current < remove) throw new NotEnoughInventoryExceptionCore(work.getTitle());
+            work.setNumberOfCopies(current - remove);
+            verify(work);
         } else {
-            w.setNumberOfCopies(current + number);
+            work.setNumberOfCopies(current + number);
         }
     }
 
