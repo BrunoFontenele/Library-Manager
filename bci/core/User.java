@@ -22,10 +22,8 @@ class User implements Serializable{
     }
 
     void alterActiveReqNum(int num){
-        if(num < 0 && _activeReqNumber != 0) _activeReqNumber -= 1; 
-        else{
-            _activeReqNumber += 1;
-        }
+        if(num == -1 && _activeReqNumber != 0) _activeReqNumber--;
+        else if(num == 1) _activeReqNumber++;
     }
 
     void setBehavior(Behavior newBehavior){
