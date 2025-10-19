@@ -31,7 +31,7 @@ class DoSaveFile extends Command<LibraryManager> {
                     _display.popup("Erro: associação de ficheiro em falta");
                 } catch (IOException ioEx) {
                     _display.popup("Erro ao guardar a biblioteca");
-                }
+                } catch(UnavailableFileException er){}
         } catch (IOException e) {
             _display.popup("Erro ao guardar a biblioteca");
         }

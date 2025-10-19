@@ -19,6 +19,9 @@ class RuleChecker {
     }
 
     void addRule(Rule rule){
+        for(Rule r : rules)
+            if(r.getId() == rule.getId())
+                return; 
         rules.add(rule);
         rules.sort((a,b) -> Integer.compare(a.getId(), b.getId()));
     }

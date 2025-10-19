@@ -36,6 +36,16 @@ public class Library implements Serializable {
     }
 
     // ---------- GETTERS ----------
+    boolean validUser(int userId){
+        if(_usersById.get(userId) == null) return false;
+        else return true;
+    }
+
+    boolean validWork(int workId){
+        if(_worksById.get(workId) == null) return false;
+        else return true;
+    }
+
     List<Work> getListOfWorks() {
         return Collections.unmodifiableList(new ArrayList<>(_worksById.values()));
     }
