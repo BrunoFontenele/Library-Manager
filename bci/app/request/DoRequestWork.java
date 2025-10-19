@@ -25,11 +25,11 @@ class DoRequestWork extends Command<LibraryManager> {
   }
 
   @Override
-  protected final void execute() throws CommandException {
+  protected final void execute() throws CommandException, NoSuchUserException, NoSuchWorkException {
     int userId = integerField("userID");
     int workId = integerField("workID");
 
-    if(!_receiver.validUser(userId)) throw new NoSuchUserExceptionCore(userId);
+    if(!_receiver.validUser(userId)) throw new NoSuchUserException(userId);
     if(!_receiver.validWork(workId)) throw new NoSuchWorkException(workId);
 
     try{

@@ -14,6 +14,6 @@ public class NoSuchUserException extends CommandException {
    * @param id unknown user id
    */
   public NoSuchUserException(int id) {
-    super("");
+    super(Message.noSuchUser(id));
   }
 }
