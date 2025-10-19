@@ -47,7 +47,7 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
         throw new MissingFileAssociationException();
     }
     _filename = filename;
-    save(); //checar com a Bia  
+    save();
 }
 
 
@@ -109,8 +109,9 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
 
 
   public int registerUser(String name, String email) { 
+      int res = _library.registerUser(name, email); 
       _modified = true;
-      return _library.registerUser(name, email); 
+      return res;
   }
 
   public String listUser(int userId) throws NoSuchUserExceptionCore { return _library.listUser(userId); }
@@ -131,8 +132,9 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
   }
 
   public Creator registerCreator(String name) {
+      Creator res = _library.registerCreator(name);
       _modified = true;
-      return _library.registerCreator(name);
+      return res;
   }
 
   public boolean isModified(){return _modified;}
