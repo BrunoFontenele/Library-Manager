@@ -11,15 +11,15 @@ class Request {
         _endOfRequest = endOfRequest;
     }
 
-    int get_userId() {
+    int getUserId() {
         return _userId;
     }
 
-    int get_workId() {
+    int getWorkId() {
         return _workId;
     }
 
-    int get_endOfRequest() {
+    int getEndOfRequest() {
         return _endOfRequest;
     }
     

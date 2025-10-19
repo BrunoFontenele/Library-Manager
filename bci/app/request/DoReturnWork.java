@@ -16,11 +16,20 @@ class DoReturnWork extends Command<LibraryManager> {
 
   DoReturnWork(LibraryManager receiver) {
     super(Label.RETURN_WORK, receiver);
-    //FIXME add command fields
+    addIntegerField("userID", bci.app.user.Prompt.userId());
+    addIntegerField("workID", bci.app.work.Prompt.workId());
   }
 
   @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
+  protected final void execute() throws CommandException, NoSuchUserException, NoSuchWorkException {
+    int userId = integerField("userID");
+    int workId = integerField("workID");
+
+    if(!_receiver.validUser(userId)) throw new NoSuchUserException(userId);
+    if(!_receiver.validWork(workId)) throw new NoSuchWorkException(workId);
+
+    if(!_receiver.returnWork(userId, workId))
+      throw new WorkNotBorrowedByUserException();
+    if()
   }
 }

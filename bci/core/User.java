@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 class User implements Serializable{
     private final int _id;
@@ -52,6 +53,21 @@ class User implements Serializable{
 
     void addUserRequest(Request request){
         _userRequests.add(request);
+    }
+
+    Request removeUserRequest(int workId){
+        Iterator<Request> iterator = _userRequests.iterator();
+        while (iterator.hasNext()) {
+            Request request = iterator.next();
+            if (request.getWorkId() == workId) {
+                iterator.remove();
+                return request;
+            }
+        }
+    }
+
+    boolean getRequestLoan(int workId){
+  
     }
 
     public String toString(){

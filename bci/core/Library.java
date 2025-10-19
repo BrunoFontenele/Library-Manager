@@ -230,6 +230,9 @@ public class Library implements Serializable {
 
   int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
     User user = _usersById.get(userId);
+
+
+
     Work work = _worksById.get(workId);
 
     _ruleChecker.checkRules(work, user);
@@ -239,4 +242,11 @@ public class Library implements Serializable {
 
     return request.get_endOfRequest();
   }
+
+  boolean returnWork(int userId, int workId){
+    User user = _usersById.get(userId);
+    Request request = user.removeUserRequest(workId);
+  }
+
+
 }

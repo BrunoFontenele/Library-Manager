@@ -146,6 +146,12 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
     return res;
   }
 
+  public boolean returnWork(int userId, int workId){
+    boolean res = _library.returnWork(userId, workId);
+    _modified = true;
+    return res;
+  }
+
   public int getRuleError(CouldNotRequestException e){
     return e.getError();
   }
