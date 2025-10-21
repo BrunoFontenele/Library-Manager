@@ -146,8 +146,8 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
     return res;
   }
 
-  public boolean returnWork(int userId, int workId){
-    boolean res = _library.returnWork(userId, workId);
+  public int returnWork(int userId, int workId){
+    int res = _library.returnWork(userId, workId);
     _modified = true;
     return res;
   }
@@ -160,9 +160,15 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
     return _library.validUser(userId);
   }
 
-
   public boolean validWork(int workId){
-    return _library.validWork(workId);
+    res = _library.validWork(workId);
+    _modified = true;
+    return res;
+  }
+
+  public void payFine(int userId, int quant){
+    _library.payFine(userId, quant);
+    _modified = true;
   }
 }
 

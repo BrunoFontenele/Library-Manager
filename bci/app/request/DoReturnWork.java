@@ -28,8 +28,15 @@ class DoReturnWork extends Command<LibraryManager> {
     if(!_receiver.validUser(userId)) throw new NoSuchUserException(userId);
     if(!_receiver.validWork(workId)) throw new NoSuchWorkException(workId);
 
-    if(!_receiver.returnWork(userId, workId))
-      throw new WorkNotBorrowedByUserException();
-    if()
+    int fine = _receiver.returnWork(userId, workId);
+
+    if(fine < 0)
+      throw new WorkNotBorrowedByUserException(); 
+
+    if(fine > 0){
+      _display.popup(Message.showFine(userId, fine));
+      if(Form.confirm(Prompt.finePaymentChoice()))
+        _receiver.payFine(userId, fine);
+    }
   }
 }

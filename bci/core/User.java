@@ -1,6 +1,7 @@
 package bci.core;
 
 import java.io.Serializable;
+import java.net.Authenticator.RequestorType;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +14,8 @@ class User implements Serializable{
     private String _email;
     private int _fine;
     private UserBehavior _behavior;
-    private List<Request> _userRequests;
+    private List<Request> _activeUserRequests;
+    private List<Request> _inactiveUserRequests;
 
     User(String name, String email, int nextUserId){
         _id = nextUserId;
@@ -22,11 +24,8 @@ class User implements Serializable{
         _email = email;
         _fine = 0;
         _behavior = Normal.getNormalBehavior();
-        _userRequests = new ArrayList<>();
-    }
-
-    void setBehavior(UserBehavior newBehavior){
-        _behavior = newBehavior;
+        _activeUserRequests = new ArrayList<>();
+        _inactiveUserRequests = new ArrayList<>();
     }
 
     void setActive(){
@@ -37,15 +36,15 @@ class User implements Serializable{
         return _isActive;
     }
 
-    int getUserId(){return _id;}
-
-    String getName(){return _name;}
-
-    int getActiveNumReq(){
-        return _userRequests.size();
+    void setBehavior(UserBehavior newBehavior){
+        _behavior = newBehavior;
     }
 
     UserBehavior getBehavior() {return _behavior;}
+
+    int getUserId(){return _id;}
+
+    String getName(){return _name;}
 
     List<Request> getUserRequests(){
         return Collections.unmodifiableList(_userRequests);
@@ -55,19 +54,29 @@ class User implements Serializable{
         _userRequests.add(request);
     }
 
-    Request removeUserRequest(int workId){
+    int removeUserRequest(int workId){
         Iterator<Request> iterator = _userRequests.iterator();
         while (iterator.hasNext()) {
             Request request = iterator.next();
             if (request.getWorkId() == workId) {
-                iterator.remove();
-                return request;
+                iterator.remove(); 
+                int fine = (getCurrentDay() - request.getEndOfRequest()) * 5;
+                _fine += fine;
+                return fine <= 0? 0:fine; 
             }
         }
+        return -1;
     }
 
-    boolean getRequestLoan(int workId){
-  
+    void payFine(int quantity){
+        if(quantity>0)
+            _fine -= quantity;
+
+        
+    }
+
+    int getUserFine(){
+        return _fine;
     }
 
     public String toString(){
