@@ -51,7 +51,7 @@ abstract class Work implements Serializable, NotifiableWork {
     @Override
     public String toString(){
         return String.format("%d - %d de %d - %s - %s - %d - %s - %s",
-            _workId, _numberOfCopies, _availableCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
+            _workId, _availableCopies, _numberOfCopies, getType(), _title, _price, getCategoryString(), getAdInfo());
     }
 
     @Override

@@ -63,7 +63,7 @@ class User implements Serializable, Notifiable{
             Request request = iterator.next();
             if (request.getWorkId() == workId) {
                 iterator.remove();
-                _lastRequestsOnTime.add(day > request.getEndOfRequest());
+                _lastRequestsOnTime.add(day <= request.getEndOfRequest());
                 checkBehavior();
                 return _fine;
             }
@@ -72,7 +72,7 @@ class User implements Serializable, Notifiable{
     }
 
     void checkBehavior(){
-        int size = _activeUserRequests.size();
+        int size = _lastRequestsOnTime.size();
         if(size<3) return;
         if(size>5)
             _lastRequestsOnTime.subList(0,size-5).clear();
@@ -90,13 +90,10 @@ class User implements Serializable, Notifiable{
     }
 
     void payFine(int quantity, int day){
-        if(quantity>0)
-            _fine -= quantity;
-        for(Request request : _activeUserRequests){
-            if(request.getWorkId() < day)
-                return;
-        }
-        _isActive = true;
+        if(quantity == _fine)
+            _fine = 0;
+        if(_activeUserRequests.isEmpty())
+            _isActive = true;
     }
 
     int getUserFine(){
@@ -106,7 +103,7 @@ class User implements Serializable, Notifiable{
     void checkRequisitions(int day){
         if(_fine != 0) _fine = 0;
         for(Request request : _activeUserRequests)
-            if(request.getWorkId() < day) {
+            if(request.getEndOfRequest() < day) {
                 _isActive = false;
                 _fine += (day - request.getEndOfRequest()) * 5;
             }

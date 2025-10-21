@@ -252,7 +252,7 @@ public class Library implements Serializable {
   int returnWork(int userId, int workId){
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
-    if(res>0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
+    if(res>=0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
     return res;
   }
 
