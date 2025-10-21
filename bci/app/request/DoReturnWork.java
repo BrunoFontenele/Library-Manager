@@ -22,21 +22,21 @@ class DoReturnWork extends Command<LibraryManager> {
 
   @Override
   protected final void execute() throws CommandException, NoSuchUserException, NoSuchWorkException {
-    int userId = integerField("userID");
-    int workId = integerField("workID");
+      int userId = integerField("userID");
+      int workId = integerField("workID");
 
-    if(!_receiver.validUser(userId)) throw new NoSuchUserException(userId);
-    if(!_receiver.validWork(workId)) throw new NoSuchWorkException(workId);
+      if (!_receiver.validUser(userId)) throw new NoSuchUserException(userId);
+      if (!_receiver.validWork(workId)) throw new NoSuchWorkException(workId);
 
-    int fine = _receiver.returnWork(userId, workId);
+      int fine = _receiver.returnWork(userId, workId);
 
-    if(fine < 0)
-      throw new WorkNotBorrowedByUserException(); 
-
-    if(fine > 0){
-      _display.popup(Message.showFine(userId, fine));
-      if(Form.confirm(Prompt.finePaymentChoice()))
-        _receiver.payFine(userId, fine);
-    }
+      if (fine < 0) //o valor -1 indica que ocorreu um erro na remocao
+          throw new WorkNotBorrowedByUserException(workId, userId);
+      else
+          if(fine > 0) {
+              _display.popup(Message.showFine(userId, fine));
+              if (Form.confirm(Prompt.finePaymentChoice()))
+                  _receiver.payFine(userId, fine);
+          }
   }
 }

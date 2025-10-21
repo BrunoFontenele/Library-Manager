@@ -161,13 +161,13 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
   }
 
   public boolean validWork(int workId){
-    res = _library.validWork(workId);
+    boolean res = _library.validWork(workId);
     _modified = true;
     return res;
   }
 
   public void payFine(int userId, int quant){
-    _library.payFine(userId, quant);
+    _library.payFine(userId, quant, getCurrentDay());
     _modified = true;
   }
 }

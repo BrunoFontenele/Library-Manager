@@ -47,36 +47,49 @@ class User implements Serializable{
     String getName(){return _name;}
 
     List<Request> getUserRequests(){
-        return Collections.unmodifiableList(_userRequests);
+        return Collections.unmodifiableList(_activeUserRequests);
     }
 
+    int getActiveNumReq(){return _activeUserRequests.size();}
+
     void addUserRequest(Request request){
-        _userRequests.add(request);
+        _activeUserRequests.add(request);
     }
 
     int removeUserRequest(int workId){
-        Iterator<Request> iterator = _userRequests.iterator();
+        Iterator<Request> iterator = _activeUserRequests.iterator();
         while (iterator.hasNext()) {
             Request request = iterator.next();
             if (request.getWorkId() == workId) {
-                iterator.remove(); 
-                int fine = (getCurrentDay() - request.getEndOfRequest()) * 5;
-                _fine += fine;
-                return fine <= 0? 0:fine; 
+                iterator.remove();
+                _inactiveUserRequests.add(request);
+                return _fine;
             }
         }
         return -1;
     }
 
-    void payFine(int quantity){
+    void payFine(int quantity, int day){
         if(quantity>0)
             _fine -= quantity;
-
-        
+        for(Request request : _activeUserRequests){
+            if(request.getWorkId() < day)
+                return;
+        }
+        _isActive = true;
     }
 
     int getUserFine(){
         return _fine;
+    }
+
+    void checkRequisitions(int day){
+        if(_fine != 0) _fine = 0;
+        for(Request request : _activeUserRequests)
+            if(request.getWorkId() < day) {
+                _isActive = false;
+                _fine += (day - request.getEndOfRequest()) * 5;
+            }
     }
 
     public String toString(){

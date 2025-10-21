@@ -27,7 +27,7 @@ class CheckRequestTwice extends Rule{
         if(userRequests.isEmpty())
             return;
         for(Request request : userRequests){
-            if(request.get_workId() == work.getWorkId())
+            if(request.getWorkId() == work.getWorkId())
                 throw new CouldNotRequestException(1);
         }
     }
@@ -84,7 +84,7 @@ class CheckPrice extends Rule{
     }
 
     void check(Work work, User user) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
-        if (user.getBehavior() == Cumpridor.getCumpridorBehavior()) return; // dar fix nisto
+        if (user.getBehavior() == Cumpridor.getCumpridorBehavior()) return; // fixed
 
         if(work.getPrice()>25) throw new CouldNotRequestException(6);
     }

@@ -190,8 +190,9 @@ public class Library implements Serializable {
         return _currentDay;
     }
 
-    void advanceDays(int days) {
-        _currentDay += days;
+    void advanceDays(int day) {
+        _currentDay += day;
+        checkUserState(day);
     }
 
     // ---------- USERS ----------
@@ -218,6 +219,11 @@ public class Library implements Serializable {
         return sb.toString();
     }
 
+    void checkUserState(int day){
+        for(User u : _usersById.values())
+            u.checkRequisitions(day);
+    }
+
   //------------Creators-------------
 
   void removeCreators(List<Creator> creators){
@@ -238,16 +244,15 @@ public class Library implements Serializable {
     Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getAvailableCopies()));
     user.addUserRequest(request);
 
-    return request.get_endOfRequest();
+    return request.getEndOfRequest();
   }
 
   int returnWork(int userId, int workId){
-    User user = _usersById.get(userId);
-    return user.removeUserRequest(workId);
+    return _usersById.get(userId).removeUserRequest(workId);
   }
 
-  void payFine(int userId, int quant){
-    _usersById.get(userId).payFine(quant);
+  void payFine(int userId, int quant, int day){
+    _usersById.get(userId).payFine(quant, day);
   }
 
 
