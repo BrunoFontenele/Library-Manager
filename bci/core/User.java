@@ -1,13 +1,12 @@
 package bci.core;
 
 import java.io.Serializable;
-import java.net.Authenticator.RequestorType;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-class User implements Serializable{
+class User implements Serializable, Notifiable{
     private final int _id;
     private boolean _isActive;
     private String _name;
@@ -16,6 +15,7 @@ class User implements Serializable{
     private UserBehavior _behavior;
     private List<Request> _activeUserRequests;
     private List<Request> _inactiveUserRequests;
+    private final List<Notification> _notifications;
 
     User(String name, String email, int nextUserId){
         _id = nextUserId;
@@ -26,6 +26,7 @@ class User implements Serializable{
         _behavior = Normal.getNormalBehavior();
         _activeUserRequests = new ArrayList<>();
         _inactiveUserRequests = new ArrayList<>();
+        _notifications = new ArrayList<>();
     }
 
     void setActive(){
@@ -98,5 +99,15 @@ class User implements Serializable{
             _id, _name, _email, _behavior, _isActive? "ACTIVO":"SUSPENSO");
         return String.format("%d - %s - %s - %s - %s - %s %d",
         _id, _name, _email, _behavior, _isActive? "ACTIVO":"SUSPENSO" , "EUR", _fine);
+    }
+
+    public void receiveNotification(Notification n) {
+        _notifications.add(n);
+    }
+
+    List<Notification> viewNotifications() {
+        List<Notification> copy = new ArrayList<>(_notifications);
+        _notifications.clear();
+        return copy;
     }
 }
