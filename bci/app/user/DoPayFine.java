@@ -20,6 +20,6 @@ class DoPayFine extends Command<LibraryManager> {
   @Override
   protected final void execute() throws CommandException {
       int id = integerField("id");
-
+      _receiver.payFine(id);
   }
 }

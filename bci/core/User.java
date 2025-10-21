@@ -89,9 +89,8 @@ class User implements Serializable, Notifiable{
         }
     }
 
-    void payFine(int quantity, int day){
-        if(quantity == _fine)
-            _fine = 0;
+    void payFine(){
+        _fine = 0;
         if(_activeUserRequests.isEmpty())
             _isActive = true;
     }
@@ -103,8 +102,9 @@ class User implements Serializable, Notifiable{
     void checkRequisitions(int day){
         if(_fine != 0) _fine = 0;
         for(Request request : _activeUserRequests)
-            if(request.getEndOfRequest() < day) {
+            if(request.getEndOfRequest()+1 < day) {
                 _isActive = false;
+                System.out.println(day);
                 _fine += (day - request.getEndOfRequest()) * 5;
             }
     }

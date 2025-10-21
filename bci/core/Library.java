@@ -195,7 +195,7 @@ public class Library implements Serializable {
     void advanceDays(int day) {
         _currentDay += day;
         for(User u : _usersById.values()) //checar requisicoes expiradas
-            u.checkRequisitions(day);
+            u.checkRequisitions(getCurrentDay());
     }
 
     // ---------- USERS ----------
@@ -260,8 +260,8 @@ public class Library implements Serializable {
     return res;
   }
 
-  void payRequestFine(int userId, int quant, int day){
-        _usersById.get(userId).payFine(quant, day);
+  void payFine(int userId){
+        _usersById.get(userId).payFine();
     }
 
 

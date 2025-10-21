@@ -168,8 +168,8 @@ public class LibraryManager {
     return res;
   }
 
-  public void payFine(int userId, int quant){
-    _library.payRequestFine(userId, quant, getCurrentDay());
+  public void payFine(int userId){
+    _library.payFine(userId);
     _modified = true;
   }
 
