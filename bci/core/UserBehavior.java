@@ -1,12 +1,14 @@
 package bci.core;
 
+import java.io.Serializable;
+
 interface UserBehavior{
     int getReqTime(int copiesNum);
     int getMaxReq();
     String toString();
 }
 
-class Normal implements UserBehavior{
+class Normal implements UserBehavior, Serializable {
     private static Normal _normal; //posso ter stattic?
 
     private Normal() {}
@@ -36,7 +38,7 @@ class Normal implements UserBehavior{
 }
 
 
-class Faltoso implements UserBehavior{
+class Faltoso implements UserBehavior, Serializable {
     private static Faltoso _faltoso; //posso ter stattic?
 
     private Faltoso() {}
@@ -63,7 +65,7 @@ class Faltoso implements UserBehavior{
     }
 }
 
-class Cumpridor implements UserBehavior{
+class Cumpridor implements UserBehavior, Serializable {
     private static Cumpridor _cumpridor; //posso ter stattic?
 
     private Cumpridor() {}

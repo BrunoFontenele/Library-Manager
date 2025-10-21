@@ -217,9 +217,7 @@ public class Library implements Serializable {
         return sb.toString();
     }
 
-    void payFine(int userId, int quant, int day){
-        _usersById.get(userId).payFine(quant, day);
-    }
+    //payFine
 
 
   //------------ CREATORS -------------
@@ -238,7 +236,7 @@ public class Library implements Serializable {
 
     _ruleChecker.checkRules(work, user);
 
-    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getNumberOfAvailableCopies()));
+    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getNumberOfAvailableCopies())+1); //somando o dia de hoje
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
 
@@ -251,5 +249,9 @@ public class Library implements Serializable {
     if(res>0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
     return res;
   }
+
+  void payRequestFine(int userId, int quant, int day){
+        _usersById.get(userId).payFine(quant, day);
+    }
 
 }

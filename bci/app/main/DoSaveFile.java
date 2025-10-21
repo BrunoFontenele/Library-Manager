@@ -25,13 +25,13 @@ class DoSaveFile extends Command<LibraryManager> {
             addStringField("fileName", Prompt.newSaveAs());
             String filename = stringField("fileName");
 
-                try {
-                    _receiver.saveAs(filename);
-                } catch (MissingFileAssociationException mfaEx) {
-                    _display.popup("Erro: associação de ficheiro em falta");
-                } catch (IOException ioEx) {
-                    _display.popup("Erro ao guardar a biblioteca");
-                } catch(UnavailableFileException er){}
+            try {
+                _receiver.saveAs(filename);
+            } catch (MissingFileAssociationException mfaEx) {
+                _display.popup("Erro: associação de ficheiro em falta");
+            } catch (IOException ioEx) {
+                _display.popup("Erro ao guardar a biblioteca");
+            } catch(UnavailableFileException er){}
         } catch (IOException e) {
             _display.popup("Erro ao guardar a biblioteca");
         }

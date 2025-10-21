@@ -1,6 +1,8 @@
 package bci.core;
 
-class Request {
+import java.io.Serializable;
+
+class Request implements Serializable {
     private int _userId;
     private int _workId;
     private int _endOfRequest;

@@ -14,11 +14,12 @@ class DoPayFine extends Command<LibraryManager> {
 
   DoPayFine(LibraryManager receiver) {
     super(Label.PAY_FINE, receiver);
-    //FIXME add command fields
+    addIntegerField("id", Prompt.userId());
   }
 
   @Override
   protected final void execute() throws CommandException {
-    //FIXME implement command
+      int id = integerField("id");
+
   }
 }

@@ -1,6 +1,8 @@
 package bci.core;
 
-class Notification {
+import java.io.Serializable;
+
+class Notification implements Serializable {
     private final String _message;
     private final NotificationType _type;
     private final int _workId;

@@ -1,12 +1,13 @@
 package bci.core;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-class Dvd extends Work{
+class Dvd extends Work implements Serializable {
     private String _igac;
     private Creator _creator;
 

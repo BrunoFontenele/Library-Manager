@@ -1,6 +1,8 @@
 package bci.core;
 
-public enum NotificationType {
+import java.io.Serializable;
+
+public enum NotificationType implements Serializable {
     Requisitions,
     Disponibility;
 }

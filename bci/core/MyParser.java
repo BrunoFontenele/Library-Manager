@@ -1,9 +1,6 @@
 package bci.core;
 
-import java.io.Reader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedReader;
+import java.io.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import bci.core.exception.UnrecognizedEntryException;
  * predefined format specified in the project statement. Invalid entries result in
  * an {@code UnrecognizedEntryException}.
  */
-class MyParser {
+class MyParser implements Serializable {
   private Library _library;
 
   /**

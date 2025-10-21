@@ -1,9 +1,11 @@
 package bci.core;
 
 import bci.core.exception.*;
+
+import java.io.Serializable;
 import java.util.*;
 
-abstract class Rule {
+abstract class Rule implements Serializable {
     private final int _ruleId;
 
     protected Rule(int ruleId){
@@ -17,7 +19,7 @@ abstract class Rule {
 
 }
 
-class CheckRequestTwice extends Rule{
+class CheckRequestTwice extends Rule {
     CheckRequestTwice(int id){
         super(id);
     }   

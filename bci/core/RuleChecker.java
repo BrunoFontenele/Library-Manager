@@ -1,11 +1,12 @@
 package bci.core;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import bci.core.exception.*;
 
 
-class RuleChecker {
+class RuleChecker implements Serializable {
     private List<Rule> rules;
 
     RuleChecker(){

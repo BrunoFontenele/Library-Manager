@@ -1,6 +1,8 @@
 package bci.core;
 
-enum Category{
+import java.io.Serializable;
+
+enum Category implements Serializable {
     REFERENCE,
     FICTION,
     SCITECH;

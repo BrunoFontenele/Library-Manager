@@ -1,6 +1,8 @@
 package bci.core;
 
-public class UserInterest {
+import java.io.Serializable;
+
+public class UserInterest implements Serializable {
 
     private final User _user;
     private final NotificationType _notificationType;

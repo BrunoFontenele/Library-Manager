@@ -6,83 +6,83 @@ import java.util.Comparator;
 
 public class LibraryManager {
 
-  private Library _library;
-  private String _filename;  
-  private boolean _modified;
+    private Library _library;
+    private String _filename;
+    private boolean _modified;
 
-  public LibraryManager() {
-      _library = new Library();
-      _filename = null;
-      _modified = false;
-  }
-
-    // SERIALIZAÇÃO
-/**
- * Saves the library to the current file.
- *
- * @throws UnavailableFileException If no file name is set.
- * @throws IOException If an error occurs while writing the file.
- */
-public void save() throws UnavailableFileException, IOException, UnavailableFileException{
-    if (_filename == null || _filename.isBlank()) {
-        throw new UnavailableFileException(_filename);
-    }
-
-    if (!_modified) return;
-
-    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(_filename))) {
-        out.writeObject(_library);
+    public LibraryManager() {
+        _library = new Library();
+        _filename = null;
         _modified = false;
     }
-}
 
-/**
- * Saves the library to a new file.
- *
- * @param filename The name of the file to save to.
- * @throws IOException If an error occurs while writing the file.
- */
-public void saveAs(String filename) throws IOException, MissingFileAssociationException, UnavailableFileException{
-    if (filename == null || filename.isBlank()) {
-        throw new MissingFileAssociationException();
+    // SERIALIZAÇÃO
+    /**
+     * Saves the library to the current file.
+     *
+     * @throws UnavailableFileException If no file name is set.
+     * @throws IOException If an error occurs while writing the file.
+     */
+    public void save() throws UnavailableFileException, IOException, UnavailableFileException{
+        if (_filename == null || _filename.isBlank()) {
+            throw new UnavailableFileException(_filename);
+        }
+
+        if (!_modified) return;
+
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(_filename))) {
+            out.writeObject(_library);
+            _modified = false;
+        }
     }
-    _filename = filename;
-    save();
-}
+
+    /**
+     * Saves the library to a new file.
+     *
+     * @param filename The name of the file to save to.
+     * @throws IOException If an error occurs while writing the file.
+     */
+    public void saveAs(String filename) throws IOException, MissingFileAssociationException, UnavailableFileException{
+        if (filename == null || filename.isBlank()) {
+            throw new MissingFileAssociationException();
+        }
+        _filename = filename;
+        save();
+    }
 
 
- /**
- * Loads the library from a file.
- *
- * @param filename The file to load the library from.
- * @throws UnavailableFileException If the file cannot be read or is not a valid library.
- */
-  public void load(String filename) throws UnavailableFileException {
-      try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-          Object obj = in.readObject();
-          if (!(obj instanceof Library)) //checagem desnecessaia. Prof
-              throw new UnavailableFileException(filename);
-          _library = (Library) obj;
-          _filename = filename;
-          _modified = false;
-      } catch (IOException | ClassNotFoundException e) {
-          throw new UnavailableFileException(filename);
-      }
-  }
+    /**
+     * Loads the library from a file.
+     *
+     * @param filename The file to load the library from.
+     * @throws UnavailableFileException If the file cannot be read or is not a valid library.
+     */
+    public void load(String filename) throws UnavailableFileException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            Object obj = in.readObject();
+            if (!(obj instanceof Library)) //checagem desnecessaia. Prof
+                throw new UnavailableFileException(filename);
+            _library = (Library) obj;
+            _filename = filename;
+            _modified = false;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new UnavailableFileException(filename);
+        }
+    }
 
-  // IMPORTAÇÃO DE FICHEIROS DE TEXTO
-  public void importFile(String datafile) throws ImportFileException {
-      try {
-          if (datafile != null && !datafile.isEmpty()) {
-              _library.importFile(datafile);
-              _modified = true;
-          }
-      } catch (IOException | UnrecognizedEntryException e) {
-          throw new ImportFileException(datafile, e);
-      }
-  }
+    // IMPORTAÇÃO DE FICHEIROS DE TEXTO
+    public void importFile(String datafile) throws ImportFileException {
+        try {
+            if (datafile != null && !datafile.isEmpty()) {
+                _library.importFile(datafile);
+                _modified = true;
+            }
+        } catch (IOException | UnrecognizedEntryException e) {
+            throw new ImportFileException(datafile, e);
+        }
+    }
 
-  // MÉTODOS DE GESTÃO
+    // MÉTODOS DE GESTÃO
 
   public int getCurrentDay() { return _library.getCurrentDay(); }
 
@@ -167,7 +167,7 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
   }
 
   public void payFine(int userId, int quant){
-    _library.payFine(userId, quant, getCurrentDay());
+    _library.payRequestFine(userId, quant, getCurrentDay());
     _modified = true;
   }
 }
