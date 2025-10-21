@@ -9,7 +9,6 @@ public class Library implements Serializable {
     private Map<Integer, Work> _worksById;
     private Map<Integer, User> _usersById;
     private Map<String, Creator> _creatorsByName;
-    //os users guardam suas proprias requests
 
     private int _currentDay;
     private int _nextWorkId;
@@ -21,17 +20,19 @@ public class Library implements Serializable {
     @Serial
     private static final long serialVersionUID = 202501101348L;
 
-    void importFile(String filename) throws UnrecognizedEntryException, IOException {
-        MyParser parser = new MyParser(this);
-        parser.parseFile(filename);
-    }
-
     Library() {
         _worksById = new LinkedHashMap<>();
         _usersById = new LinkedHashMap<>();
-        _creatorsByName = new LinkedHashMap<>(); 
+        _creatorsByName = new LinkedHashMap<>();
         _nextUserId = _nextWorkId = _currentDay = 1;
-        _ruleChecker = new RuleChecker(); 
+        _ruleChecker = new RuleChecker();
+    }
+
+    // ---------- FILES ----------
+
+    void importFile(String filename) throws UnrecognizedEntryException, IOException {
+        MyParser parser = new MyParser(this);
+        parser.parseFile(filename);
     }
 
     // ---------- GETTERS ----------
@@ -57,30 +58,28 @@ public class Library implements Serializable {
         return Collections.unmodifiableList(new ArrayList<>(_usersById.values()));
     }
 
-    // ---------- WORK HELPERS ----------
-    private void addWorkInternal(Work work) {
-      _worksById.put(work.getWorkId(), work);
-    }
+
+    // ---------- WORK INTERNAL ----------
 
     private void removeWorkInternal(Work work) {
         if (work == null) return;
 
         _worksById.remove(work.getWorkId());
-        removeCreators(work.listCreators());
+        List<Creator> creators = getListOfCreators();
+        for(Creator creator : creators)
+            creator.removeWork(work.getWorkId());
+        removeCreators(creators);
     }
 
-    private Work getWorkById(int workId) {
-        return _worksById.get(workId);
-    }
+    // ---------- WORKS ----------
 
-    // ---------- MENU / LISTING ----------
     String listWork(int workId) throws NoSuchWorkExceptionCore {
-        Work w = getWorkById(workId);
-        if (w != null) return w.toString();
+        Work work = _worksById.get(workId);
+        if (work != null) return work.toString();
         throw new NoSuchWorkExceptionCore(workId);
     }
 
-    String listWorks() {
+    String listWorks(){
         List<Work> copy = new ArrayList<>(_worksById.values());
         copy.sort(Comparator.comparingInt(Work::getWorkId));
 
@@ -91,10 +90,10 @@ public class Library implements Serializable {
     }
 
     String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore {
-        Creator c = _creatorsByName.get(name);
-        if (c == null) throw new NoSuchCreatorExceptionCore(name);
+        Creator creator = _creatorsByName.get(name);
+        if (creator == null) throw new NoSuchCreatorExceptionCore(name);
 
-        List<Work> works = new ArrayList<>(c.getWorkList());
+        List<Work> works = new ArrayList<>(creator.getWorkList());
         if (works.isEmpty()) throw new NoSuchCreatorExceptionCore(name);
 
         works.sort(Comparator.comparing(w -> w.getTitle().toLowerCase()));
@@ -103,6 +102,21 @@ public class Library implements Serializable {
         for (Work w : works)
             sb.append(w).append("\n");
         return sb.toString();
+    }
+
+    void alterInvWork(int quantityChange, int workId) throws NotEnoughInventoryExceptionCore {
+        Work work = _worksById.get(workId);
+        int current = work.getNumberOfAvailableCopies();
+        if (quantityChange < 0){
+            int remove = -quantityChange;
+            if (current < remove) throw new NotEnoughInventoryExceptionCore(work.getTitle());
+            work.setNumberOfCopies(current - remove);
+            work.setNumberOfAvailableCopies(current - remove);
+            if(work.getNumberOfCopies() == 0) removeWorkInternal(work);
+        } else {
+            work.setNumberOfCopies(current + quantityChange); // acho q falta a verificação para caso passe do limite
+            work.setNumberOfAvailableCopies(current + quantityChange);
+        }
     }
 
     String performSearch(String search) {
@@ -123,29 +137,9 @@ public class Library implements Serializable {
         return found ? sb.toString() : null;
     }
 
-    // ---------- VERIFY / INVENTORY ----------
-    void verify(Work work) {
-        if (work.getNumberOfCopies() == 0) {
-            removeWorkInternal(work);
-        }
-    }
-
-    void alterInvWork(int quantityChange, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore {
-        Work work = getWorkById(workId);
-        if (work == null) throw new NoSuchWorkExceptionCore(workId);
-
-        int current = work.getNumberOfCopies();
-        if (quantityChange < 0){
-            int remove = -quantityChange;
-            if (current < remove) throw new NotEnoughInventoryExceptionCore(work.getTitle());
-            work.setNumberOfCopies(current - remove);
-            verify(work);
-        } else {
-            work.setNumberOfCopies(current + quantityChange); // acho q falta a verificação para caso passe do limite
-        }
-    }
 
     // ---------- REGISTER WORKS / CREATORS ----------
+
     void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type) {
         int id = _nextWorkId++;
         Dvd newDvd = new Dvd(igac, creator, title, price, numberOfCopies, type, id);
@@ -157,7 +151,7 @@ public class Library implements Serializable {
         }
 
         stored.addWork(newDvd);
-        addWorkInternal(newDvd);
+        _worksById.put(newDvd.getWorkId(), newDvd);
     }
 
     void registerBook(String isbn, int price, String title, int numberOfCopies, List<Creator> creators, Category type) {
@@ -173,7 +167,7 @@ public class Library implements Serializable {
             stored.addWork(newBook);
         }
 
-        addWorkInternal(newBook);
+        _worksById.put(newBook.getWorkId(), newBook);
     }
 
     Creator registerCreator(String name) {
@@ -192,10 +186,12 @@ public class Library implements Serializable {
 
     void advanceDays(int day) {
         _currentDay += day;
-        checkUserState(day);
+        for(User u : _usersById.values()) //checar requisicoes expiradas
+            u.checkRequisitions(day);
     }
 
     // ---------- USERS ----------
+
     int registerUser(String name, String email) {
         int id = _nextUserId++;
         User u = new User(name, email, id);
@@ -209,6 +205,8 @@ public class Library implements Serializable {
         throw new NoSuchUserExceptionCore(userId);
     }
 
+    //showUserNotifications
+
     String listUsers() {
         List<User> copy = new ArrayList<>(_usersById.values());
         copy.sort(Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER).thenComparingInt(User::getUserId));
@@ -219,41 +217,39 @@ public class Library implements Serializable {
         return sb.toString();
     }
 
-    void checkUserState(int day){
-        for(User u : _usersById.values())
-            u.checkRequisitions(day);
+    void payFine(int userId, int quant, int day){
+        _usersById.get(userId).payFine(quant, day);
     }
 
-  //------------Creators-------------
+
+  //------------ CREATORS -------------
 
   void removeCreators(List<Creator> creators){
     for(Creator creator : creators)
-        _creatorsByName.remove(creator.getName());
+        if(creator.getWorkList().isEmpty())
+            _creatorsByName.remove(creator.getName());
   }
-
 
   //------------Requisitions-------------
 
   int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
     User user = _usersById.get(userId);
-
     Work work = _worksById.get(workId);
 
     _ruleChecker.checkRules(work, user);
 
-    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getAvailableCopies()));
+    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getNumberOfAvailableCopies()));
     user.addUserRequest(request);
+    work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
 
     return request.getEndOfRequest();
   }
 
   int returnWork(int userId, int workId){
-    return _usersById.get(userId).removeUserRequest(workId);
+    Work work = _worksById.get(workId);
+    int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
+    if(res>0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
+    return res;
   }
-
-  void payFine(int userId, int quant, int day){
-    _usersById.get(userId).payFine(quant, day);
-  }
-
 
 }

@@ -24,15 +24,15 @@ class DoChangeWorkInventory extends Command<LibraryManager> {
  
   @Override
   protected final void execute() throws CommandException {
-    int quantity = integerField("quantity");
-    int id = integerField("id");
+      int quantity = integerField("quantity");
+      int id = integerField("id");
 
-    try {
-      _receiver.alterInvWork(quantity, id);
-    } catch (NotEnoughInventoryExceptionCore e) {
-      _display.popup(Message.notEnoughInventory(id, quantity));
-    } catch (NoSuchWorkExceptionCore e) {
-      throw new NoSuchWorkException(id);
-    }
+      if(_receiver.validWork(id)) throw new NoSuchWorkException(id);
+
+      try {
+          _receiver.alterInvWork(quantity, id);
+      } catch (NotEnoughInventoryExceptionCore e) {
+          _display.popup(Message.notEnoughInventory(id, quantity));
+      }
   }
 }

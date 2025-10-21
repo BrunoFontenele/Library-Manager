@@ -91,7 +91,7 @@ public void saveAs(String filename) throws IOException, MissingFileAssociationEx
       _modified = true;
   }
 
-  public void alterInvWork(int number, int workId) throws NoSuchWorkExceptionCore, NotEnoughInventoryExceptionCore { 
+  public void alterInvWork(int number, int workId) throws NotEnoughInventoryExceptionCore {
       _library.alterInvWork(number, workId); 
       _modified = true;
   }

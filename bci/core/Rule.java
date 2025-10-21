@@ -50,7 +50,7 @@ class CheckInventory extends Rule{
     }
 
     void check(Work work, User user) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{ //Para as notificacoes
-        if(work.getAvailableCopies() < 1)
+        if(work.getNumberOfAvailableCopies() < 1)
             throw new NotEnoughInventoryExceptionCore();
     }
 }

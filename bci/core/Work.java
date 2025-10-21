@@ -8,7 +8,7 @@ abstract class Work implements Serializable, NotifiableWork {
     private final int _workId;
     private String _title;
     private int _price;
-    private int _numberOfCopies;
+    private int _numberOfCopies;                                                                                                                                                                 private
     private int _availableCopies;
     private Category _category;
     private List<UserInterest> _interestedUsers;
@@ -26,7 +26,7 @@ abstract class Work implements Serializable, NotifiableWork {
 
     int getNumberOfCopies() {return _numberOfCopies;}
 
-    int getAvailableCopies() {return _availableCopies;}
+    int getNumberOfAvailableCopies() {return _availableCopies;}
 
     String getTitle() {return _title;}
 
@@ -38,7 +38,9 @@ abstract class Work implements Serializable, NotifiableWork {
 
     abstract List<Creator> listCreators();
 
-    void setNumberOfCopies(int _numberOfCopies) { this._numberOfCopies = _numberOfCopies; }
+    void setNumberOfCopies(int numberOfCopies) { _numberOfCopies = numberOfCopies; }
+
+    void setNumberOfAvailableCopies(int numberOfAvailableCopies) { _availableCopies = numberOfAvailableCopies; }
 
     String getCategoryString() {
         if(_category == Category.FICTION) return "Ficção";
