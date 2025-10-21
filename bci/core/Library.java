@@ -121,6 +121,7 @@ public class Library implements Serializable {
             work.setNumberOfCopies(total + quantityChange);
             work.setNumberOfAvailableCopies(available + quantityChange);
         }
+        work.notifyObservers(NotificationType.Disponibility, work.toString());
     }
 
 
@@ -247,6 +248,7 @@ public class Library implements Serializable {
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
 
+      work.notifyObservers(NotificationType.Requisitions, work.toString());
     return request.getEndOfRequest();
   }
 
@@ -254,6 +256,7 @@ public class Library implements Serializable {
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
     if(res>0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
+    work.notifyObservers(NotificationType.Disponibility, work.toString());
     return res;
   }
 
@@ -261,4 +264,12 @@ public class Library implements Serializable {
         _usersById.get(userId).payFine(quant, day);
     }
 
+
+    List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
+        User user = _usersById.get(userId);
+        if (user == null) {
+            throw new NoSuchUserExceptionCore(userId);
+        }
+        return user.viewNotifications();
+    }
 }
