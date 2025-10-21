@@ -104,38 +104,44 @@ public class Library implements Serializable {
         return sb.toString();
     }
 
-    void alterInvWork(int quantityChange, int workId) throws NotEnoughInventoryExceptionCore {
+    void alterInvWork(int quantityChange, int workId) throws NotEnoughInventoryExceptionCore, NoSuchWorkExceptionCore {
         Work work = _worksById.get(workId);
-        int current = work.getNumberOfAvailableCopies();
+        if (work == null) throw new NoSuchWorkExceptionCore(workId);
+
+        int available = work.getNumberOfAvailableCopies();
+        int total = work.getNumberOfCopies();
+
         if (quantityChange < 0){
             int remove = -quantityChange;
-            if (current < remove) throw new NotEnoughInventoryExceptionCore(work.getTitle());
-            work.setNumberOfCopies(current - remove);
-            work.setNumberOfAvailableCopies(current - remove);
+            if (available < remove) throw new NotEnoughInventoryExceptionCore(work.getTitle());
+            work.setNumberOfCopies(total - remove);
+            work.setNumberOfAvailableCopies(available - remove);
             if(work.getNumberOfCopies() == 0) removeWorkInternal(work);
         } else {
-            work.setNumberOfCopies(current + quantityChange); // acho q falta a verificação para caso passe do limite
-            work.setNumberOfAvailableCopies(current + quantityChange);
+            work.setNumberOfCopies(total + quantityChange);
+            work.setNumberOfAvailableCopies(available + quantityChange);
         }
     }
 
     String performSearch(String search) {
-        if (search == null) return null;
+        if (search == null) return "";
         String searchLower = search.trim().toLowerCase();
-        if (searchLower.isEmpty()) return null;
+        if (searchLower.isEmpty()) return "";
 
         StringBuilder sb = new StringBuilder();
         boolean found = false;
 
         for (Work w : _worksById.values()) {
+            if (w == null) continue;
             String workStr = w.toString();
+            if (workStr == null) continue;
             if (workStr.toLowerCase().contains(searchLower)) {
                 sb.append(workStr).append("\n");
                 found = true;
             }
         }
-        return found ? sb.toString() : null;
-    }
+        return found ? sb.toString() : "";
+    } // ao inves de "" fzr exceptions
 
 
     // ---------- REGISTER WORKS / CREATORS ----------
