@@ -5,11 +5,10 @@ import java.io.Serializable;
 class Notification implements Serializable {
     private final String _message;
     private final NotificationType _type;
-    private final int _workId;
 
-    Notification(NotificationType type, int workId, String message) {
+
+    Notification(NotificationType type, String message) {
         _type = type;
-        _workId = workId;
         _message = message;
     }
 
