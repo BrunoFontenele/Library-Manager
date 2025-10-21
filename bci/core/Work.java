@@ -8,7 +8,7 @@ abstract class Work implements Serializable, NotifiableWork {
     private final int _workId;
     private String _title;
     private int _price;
-    private int _numberOfCopies;                                                                                                                                                                 private
+    private int _numberOfCopies;
     private int _availableCopies;
     private Category _category;
     private List<UserInterest> _interestedUsers;
