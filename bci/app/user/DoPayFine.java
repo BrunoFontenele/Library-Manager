@@ -20,6 +20,9 @@ class DoPayFine extends Command<LibraryManager> {
   @Override
   protected final void execute() throws CommandException {
       int id = integerField("id");
+
+      if(!_receiver.validUser(id)) throw new NoSuchUserException(id);
+
       _receiver.payFine(id);
   }
 }
