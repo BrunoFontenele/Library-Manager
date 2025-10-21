@@ -2,7 +2,9 @@ package bci.core;
 
 import bci.core.exception.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class LibraryManager {
 
@@ -170,6 +172,10 @@ public class LibraryManager {
     _library.payRequestFine(userId, quant, getCurrentDay());
     _modified = true;
   }
+
+  public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{
+        return _library.showUserNotifications(userId);
+    }
 }
 
 

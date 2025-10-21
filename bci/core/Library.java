@@ -262,4 +262,11 @@ public class Library implements Serializable {
         _usersById.get(userId).payFine(quant, day);
     }
 
+    List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
+        User user = _usersById.get(userId);
+        if (user == null) {
+            throw new NoSuchUserExceptionCore(userId);
+        }
+        return user.viewNotifications();
+    }
 }
