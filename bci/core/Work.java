@@ -72,4 +72,13 @@ abstract class Work implements Serializable, NotifiableWork {
         return List.copyOf(_interestedUsers);
     }
 
+    public void notifyObservers(NotificationType type, String message) {
+        Notification notification = new Notification(type, message);
+        for (UserInterest ui : _interestedUsers) {
+            if (ui.getNotificationType() == type) {
+                ui.getUser().receiveNotification(notification);
+            }
+        }
+    }
+
 }

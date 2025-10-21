@@ -1,11 +1,10 @@
 package bci.core;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
-class Book extends Work implements Serializable {
+class Book extends Work{
     private String _isbn;
     private List<Creator> _creators; 
 

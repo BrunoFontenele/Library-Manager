@@ -1,7 +1,6 @@
 package bci.core;
 
 import bci.core.exception.*;
-
 import java.io.Serializable;
 import java.util.*;
 
