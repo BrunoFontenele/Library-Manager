@@ -168,7 +168,7 @@ public class LibraryManager {
     return res;
   }
 
-  public void payFine(int userId){
+  public void payFine(int userId) throws UserIsActiveExceptionCore{
         _library.payFine(userId);
         _modified = true;
   }

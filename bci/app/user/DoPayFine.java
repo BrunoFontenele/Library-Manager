@@ -1,6 +1,7 @@
 package bci.app.user;
 
 import bci.core.LibraryManager;
+import bci.core.exception.UserIsActiveExceptionCore;
 import bci.app.exception.NoSuchUserException;
 import bci.app.exception.UserIsActiveException;
 import pt.tecnico.uilib.menus.Command;
@@ -22,7 +23,10 @@ class DoPayFine extends Command<LibraryManager> {
       int id = integerField("id");
 
       if(!_receiver.validUser(id)) throw new NoSuchUserException(id);
-
-      _receiver.payFine(id);
+      try {
+        _receiver.payFine(id);
+      } catch (UserIsActiveExceptionCore e) {
+        throw new UserIsActiveException(id);
+      }
   }
 }

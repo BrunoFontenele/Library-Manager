@@ -3,6 +3,7 @@ package bci.core;
 import java.io.*;
 import java.util.*;
 
+import bci.app.exception.UserIsActiveException;
 import bci.core.exception.*;
 
 public class Library implements Serializable {
@@ -243,7 +244,7 @@ public class Library implements Serializable {
     Work work = _worksById.get(workId);
 
     _ruleChecker.checkRules(work, user);
-
+    user.checkBehavior();
     Request request = new Request(userId, workId, getCurrentDay()+ user.getBehavior().getReqTime(work.getNumberOfAvailableCopies())); //somando o dia de hoje
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
@@ -262,7 +263,14 @@ public class Library implements Serializable {
 
   void checkActive(int userId){_usersById.get(userId).checkActive(getCurrentDay());}
 
-    void payFine(int userId){_usersById.get(userId).payFine(getCurrentDay());}
+    void payFine(int userId) throws UserIsActiveExceptionCore{
+        if(!_usersById.get(userId).isActive()){
+            _usersById.get(userId).payFine(getCurrentDay());
+        }
+        else{
+            throw new UserIsActiveExceptionCore(userId);
+        }
+    }
 
     List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
         User user = _usersById.get(userId);
