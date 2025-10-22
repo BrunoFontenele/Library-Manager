@@ -245,10 +245,10 @@ public class Library implements Serializable {
 
     _ruleChecker.checkRules(work, user);
     user.checkBehavior();
-    Request request = new Request(userId, workId, getCurrentDay()+ user.getBehavior().getReqTime(work.getNumberOfAvailableCopies())); //somando o dia de hoje
+    Request request = new Request(userId, workId, getCurrentDay()+ user.getBehavior().getReqTime(work.getNumberOfCopies())); //somando o dia de hoje
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
-
+    work.removeObserver(user, NotificationType.DISPONIBILIDADE);
     work.notifyObservers(NotificationType.REQUISIÇÂO, work.toString());
     return request.getEndOfRequest();
   }
@@ -257,7 +257,9 @@ public class Library implements Serializable {
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
     if(res>=0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
-    work.notifyObservers(NotificationType.DISPONIBILIDADE, work.toString());
+    if(work.getNumberOfAvailableCopies()== 1){
+        work.notifyObservers(NotificationType.DISPONIBILIDADE, work.toString());
+    }
     return res;
   }
 
