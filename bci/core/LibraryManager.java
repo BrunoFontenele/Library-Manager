@@ -168,13 +168,19 @@ public class LibraryManager {
     return res;
   }
 
-  public void payRequestFine(int userId, int quant){
-    _library.payRequestFine(userId, quant);
-    _modified = true;
-  }
-
   public void payFine(int userId){
         _library.payFine(userId);
+        _modified = true;
+  }
+
+  public void setFine(int userId, int quant){
+        _library.setFine(userId, quant);
+        _modified = true;
+  }
+
+  public void checkActive(int userId){
+        _library.checkActive(userId);
+        _modified = true;
   }
 
   public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{

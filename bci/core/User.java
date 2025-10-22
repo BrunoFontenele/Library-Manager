@@ -65,7 +65,7 @@ class User implements Serializable, Notifiable{
                 iterator.remove();
                 _lastRequestsOnTime.add(day <= request.getEndOfRequest());
                 checkBehavior();
-                return Math.max((day-request.getEndOfRequest()) * 5, 0);
+                return Math.max((day-request.getEndOfRequest()) * 5 + _fine, 0);
             }
         }
         return -1; //isso vai ser visto no app
@@ -73,46 +73,69 @@ class User implements Serializable, Notifiable{
 
     void checkBehavior(){
         int size = _lastRequestsOnTime.size();
-        if(size<3) return;
+        if(size<3){
+            if (_behavior == Cumpridor.getCumpridorBehavior() && _lastRequestsOnTime.contains(false))
+                setBehavior(Normal.getNormalBehavior());
+            return;
+        }
         if(size>5)
             _lastRequestsOnTime.subList(0,size-5).clear();
             //only the 5 last elements
-        List<Boolean> lastThree = _lastRequestsOnTime.subList(size-3, size);
-        if(lastThree.stream().noneMatch(v -> v == true)) //if all are false
+        int newSize = _lastRequestsOnTime.size();
+        List<Boolean> lastThree = _lastRequestsOnTime.subList(newSize-3, newSize);
+
+        System.out.println(lastThree.toString());
+        System.out.println(_behavior == Cumpridor.getCumpridorBehavior());
+        System.out.println(!lastThree.get(lastThree.size() - 1));
+
+        if(lastThree.stream().noneMatch(v -> v == true)) {//if all are false
             setBehavior(Faltoso.getFaltosoBehavior());
-        if(lastThree.stream().noneMatch(v -> v == false)){
-            if(size == 5 && _lastRequestsOnTime.subList(0,size-3).stream().noneMatch(v -> v == false)) {
-                setBehavior(Cumpridor.getCumpridorBehavior());
-                return;
-            }
+            System.out.println("teste1");
+            return;
+        }
+        if(_behavior == Faltoso.getFaltosoBehavior() && lastThree.stream().allMatch(v -> v)) {
             setBehavior(Normal.getNormalBehavior());
+            System.out.println("teste2");
+            return;
+        }
+        if(_behavior == Cumpridor.getCumpridorBehavior() && !lastThree.get(lastThree.size() - 1)) { //se for cumpridor e atrasar alguma
+            setBehavior(Normal.getNormalBehavior());
+            System.out.println("teste3");
+            return;
+        }
+        if(newSize == 5 && _lastRequestsOnTime.subList(0,newSize).stream().noneMatch(v -> v == false))
+            setBehavior(Cumpridor.getCumpridorBehavior());
+
+    }
+
+    void setFine(int quant){
+        _fine = quant;
+    }
+
+    void checkActive(int day){
+        if(_fine == 0 && checkRequisitions(day)){
+            _isActive = true;
+            checkBehavior();
         }
     }
 
-    void payRequestFine(int quant){
-        if(quant<=_fine)
-            _fine -= quant;
-        if(_activeUserRequests.isEmpty())
-            _isActive = true;
-    }
-
-    void payFine(){
+    void payFine(int day){
         _fine = 0;
-        if(_activeUserRequests.isEmpty())
-            _isActive = true;
+        checkActive(day);
     }
 
     int getUserFine(){
         return _fine;
     }
 
-    void checkRequisitions(int day){
-        if(_fine != 0) _fine = 0;
+    //checa se todas as requisicoes estao ativas
+    boolean checkRequisitions(int day){
         for(Request request : _activeUserRequests)
-            if(request.getEndOfRequest()+1 < day) {
+            if(request.getEndOfRequest() < day) {
                 _isActive = false;
-                _fine += (day - request.getEndOfRequest()) * 5;
+                return false;
             }
+        return true;
     }
 
     public String toString(){

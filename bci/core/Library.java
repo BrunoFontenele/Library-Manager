@@ -244,7 +244,7 @@ public class Library implements Serializable {
 
     _ruleChecker.checkRules(work, user);
 
-    Request request = new Request(userId, workId, user.getBehavior().getReqTime(work.getNumberOfAvailableCopies())+1); //somando o dia de hoje
+    Request request = new Request(userId, workId, getCurrentDay()+ user.getBehavior().getReqTime(work.getNumberOfAvailableCopies())); //somando o dia de hoje
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
 
@@ -260,9 +260,9 @@ public class Library implements Serializable {
     return res;
   }
 
-  void payRequestFine(int userId, int quant){_usersById.get(userId).payRequestFine(quant);}
+  void checkActive(int userId){_usersById.get(userId).checkActive(getCurrentDay());}
 
-    void payFine(int userId){_usersById.get(userId).payFine();}
+    void payFine(int userId){_usersById.get(userId).payFine(getCurrentDay());}
 
     List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
         User user = _usersById.get(userId);
@@ -270,5 +270,9 @@ public class Library implements Serializable {
             throw new NoSuchUserExceptionCore(userId);
         }
         return user.viewNotifications();
+    }
+
+    void setFine(int userId, int quant){
+        _usersById.get(userId).setFine(quant);
     }
 }

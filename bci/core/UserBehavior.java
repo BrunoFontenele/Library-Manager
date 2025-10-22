@@ -35,6 +35,8 @@ class Normal implements UserBehavior, Serializable {
     public String toString(){
         return "NORMAL";
     }
+
+
 }
 
 
@@ -69,7 +71,7 @@ class Cumpridor implements UserBehavior, Serializable {
     private static Cumpridor _cumpridor; //posso ter stattic?
 
     private Cumpridor() {}
-
+//REMOVER SIMGLETON (\serializacao)
     static Cumpridor getCumpridorBehavior() {
         if(_cumpridor == null)
             _cumpridor = new Cumpridor();
