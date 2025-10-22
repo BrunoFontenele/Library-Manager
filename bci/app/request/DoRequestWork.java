@@ -26,7 +26,7 @@ class DoRequestWork extends Command<LibraryManager> {
   }
 
   @Override
-  protected final void execute() throws CommandException, NoSuchUserException, NoSuchWorkException {
+  protected final void execute() throws CommandException {
     int userId = integerField("userID");
     int workId = integerField("workID");
 

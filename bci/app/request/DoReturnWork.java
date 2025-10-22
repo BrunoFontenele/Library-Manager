@@ -1,13 +1,15 @@
 package bci.app.request;
 
+import bci.app.exception.UserIsActiveException;
 import bci.core.LibraryManager;
 import bci.app.exception.NoSuchUserException;
 import bci.app.exception.NoSuchWorkException;
 import bci.app.exception.WorkNotBorrowedByUserException;
+import bci.core.User;
+import bci.core.exception.UserIsActiveExceptionCore;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * 4.4.2. Return a work.
@@ -21,7 +23,7 @@ class DoReturnWork extends Command<LibraryManager> {
   }
 
   @Override
-  protected final void execute() throws CommandException, NoSuchUserException, NoSuchWorkException {
+  protected final void execute() throws CommandException {
       int userId = integerField("userID");
       int workId = integerField("workID");
 
@@ -36,7 +38,11 @@ class DoReturnWork extends Command<LibraryManager> {
           if(fine > 0) {
               _display.popup(Message.showFine(userId, fine));
               if (Form.confirm(Prompt.finePaymentChoice()))
-                  _receiver.payFine(userId);
+                  try {
+                      _receiver.payFine(userId);
+                  } catch(UserIsActiveExceptionCore e){
+                      throw new UserIsActiveException(userId);
+                  }
               else _receiver.setFine(userId, fine);
           }
 
