@@ -22,9 +22,9 @@ public abstract class Work implements Serializable, NotifiableWork {
         _interestedUsers = new ArrayList<>();
     }
 
-    int getWorkId() {return _workId;}
+    public int getWorkId() {return _workId;}
 
-    String getTitle() {return _title;}
+    public String getTitle() {return _title;}
 
     int getPrice() {return _price;}
 

@@ -28,9 +28,9 @@ public class User implements Serializable, Notifiable{
         _notifications = new ArrayList<>();
     }
 
-    int getUserId(){return _id;}
+    public int getUserId(){return _id;}
 
-    String getName(){return _name;}
+    public String getName(){return _name;}
 
     // ACTIVE
 

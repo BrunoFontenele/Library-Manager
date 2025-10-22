@@ -78,29 +78,18 @@ public class Library implements Serializable {
         throw new NoSuchWorkExceptionCore(workId);
     }
 
-    String listWorks(){
-        List<Work> copy = new ArrayList<>(_worksById.values());
-        copy.sort(Comparator.comparingInt(Work::getWorkId));
-
-        StringBuilder sb = new StringBuilder();
-        for (Work w : copy)
-            sb.append(w.toString()).append("\n");
-        return sb.toString();
+    List<Work> listWorks(){
+        return new ArrayList<>(_worksById.values());
     }
 
-    String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore {
+    List<Work> listWorksByCreators(String name) throws NoSuchCreatorExceptionCore {
         Creator creator = _creatorsByName.get(name);
         if (creator == null) throw new NoSuchCreatorExceptionCore(name);
 
         List<Work> works = new ArrayList<>(creator.getWorkList());
         if (works.isEmpty()) throw new NoSuchCreatorExceptionCore(name);
 
-        works.sort(Comparator.comparing(w -> w.getTitle().toLowerCase()));
-
-        StringBuilder sb = new StringBuilder();
-        for (Work w : works)
-            sb.append(w).append("\n");
-        return sb.toString();
+        return works;
     }
 
     void alterInvWork(int quantityChange, int workId) throws NotEnoughInventoryExceptionCore, NoSuchWorkExceptionCore {
@@ -143,7 +132,6 @@ public class Library implements Serializable {
         }
         return found ? sb.toString() : "";
     }
-
 
     // ---------- REGISTER WORKS / CREATORS ----------
 
@@ -206,9 +194,9 @@ public class Library implements Serializable {
         return id;
     }
 
-    String listUser(int userId) throws NoSuchUserExceptionCore {
+    User listUser(int userId) throws NoSuchUserExceptionCore {
         User u = _usersById.get(userId);
-        if (u != null) return u.toString();
+        if (u != null) return u;
         throw new NoSuchUserExceptionCore(userId);
     }
 
@@ -216,14 +204,8 @@ public class Library implements Serializable {
         _worksById.get(workId).addObserver(_usersById.get(userId), type);
     }
 
-    String listUsers() {
-        List<User> copy = new ArrayList<>(_usersById.values());
-        copy.sort(Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER).thenComparingInt(User::getUserId));
-
-        StringBuilder sb = new StringBuilder();
-        for (User u : copy)
-            sb.append(u.toString()).append("\n");
-        return sb.toString();
+    List<User> listUsers() {
+        return new ArrayList<>(_usersById.values());
     }
 
     void payFine(int userId) throws UserIsActiveExceptionCore{

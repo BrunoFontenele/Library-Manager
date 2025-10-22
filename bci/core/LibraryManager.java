@@ -114,10 +114,12 @@ public class LibraryManager {
   public String listWork(int workId) throws NoSuchWorkExceptionCore { return _library.listWork(workId); }
 
 
-  public String listWorks() { return _library.listWorks(); }
+  public List<Work> listWorks() { return _library.listWorks(); }
 
 
-  public String listWorksByCreators(String name) throws NoSuchCreatorExceptionCore { return _library.listWorksByCreators(name); }
+  public List<Work> listWorksByCreators(String name) throws NoSuchCreatorExceptionCore {
+        return _library.listWorksByCreators(name);
+    }
 
 
   public String performSearch(String search){return _library.performSearch(search);}
@@ -134,10 +136,10 @@ public class LibraryManager {
       return res;
   }
 
-  public String listUser(int userId) throws NoSuchUserExceptionCore { return _library.listUser(userId); }
+  public User listUser(int userId) throws NoSuchUserExceptionCore { return _library.listUser(userId); }
 
 
-  public String listUsers() { return _library.listUsers(); }
+  public List<User> listUsers() { return _library.listUsers(); }
 
     public boolean isModified(){return _modified;}
 
@@ -187,6 +189,7 @@ public class LibraryManager {
 
    public void subscribeObserver(int userId, int workId, NotificationType type){
         _library.subscribeObserver(userId, workId, type);
+        _modified = true;
    } 
 }
 

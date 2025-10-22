@@ -20,7 +20,7 @@ class DoShowUser extends Command<LibraryManager> {
   protected final void execute() throws CommandException {
     int id = integerField("id");
     try {
-      _display.popup(_receiver.listUser(id));
+      _display.popup(_receiver.listUser(id).toString());
     } catch (NoSuchUserExceptionCore e) {
       throw new NoSuchUserException(id);
     }

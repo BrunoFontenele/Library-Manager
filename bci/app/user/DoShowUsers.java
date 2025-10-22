@@ -1,7 +1,11 @@
 package bci.app.user;
 
 import bci.core.LibraryManager;
+import bci.core.User;
 import pt.tecnico.uilib.menus.Command;
+import java.util.List;
+
+import java.util.Comparator;
 
 /**
  * 4.2.4. Show all users.
@@ -14,6 +18,12 @@ class DoShowUsers extends Command<LibraryManager> {
 
   @Override
   protected final void execute() {
-    _display.popup(_receiver.listUsers());
+      List<User> users = _receiver.listUsers();
+      users.sort(Comparator.comparing(User::getName, String.CASE_INSENSITIVE_ORDER).thenComparingInt(User::getUserId));
+
+      StringBuilder sb = new StringBuilder();
+      for (User u : users)
+          sb.append(u.toString()).append("\n");
+      _display.popup(sb.toString());
   }
 }
