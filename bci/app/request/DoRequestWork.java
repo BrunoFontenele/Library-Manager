@@ -1,6 +1,7 @@
 package bci.app.request;
 
 import bci.core.LibraryManager;
+import bci.core.NotificationType;
 import bci.core.exception.CouldNotRequestException;
 import bci.core.exception.NoSuchUserExceptionCore;
 import bci.core.exception.NotEnoughInventoryExceptionCore;
@@ -37,8 +38,9 @@ class DoRequestWork extends Command<LibraryManager> {
     }catch(CouldNotRequestException e){
       throw new BorrowingRuleFailedException(userId, workId, _receiver.getRuleError(e));
     }catch(NotEnoughInventoryExceptionCore er){
-      if(Form.confirm(Prompt.returnNotificationPreference())){}
-        //notificacao
+      if(Form.confirm(Prompt.returnNotificationPreference())){
+        _receiver.subscribeObserver(userId, workId, NotificationType.DISPONIBILIDADE);
+      }
     }
   }
 }

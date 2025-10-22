@@ -15,7 +15,7 @@ class User implements Serializable, Notifiable{
     private UserBehavior _behavior;
     private List<Request> _activeUserRequests;
     private List<Boolean> _lastRequestsOnTime;
-    private final List<Notification> _notifications;
+    private List<Notification> _notifications;
 
     User(String name, String email, int nextUserId){
         _id = nextUserId;
@@ -84,23 +84,16 @@ class User implements Serializable, Notifiable{
         int newSize = _lastRequestsOnTime.size();
         List<Boolean> lastThree = _lastRequestsOnTime.subList(newSize-3, newSize);
 
-        System.out.println(lastThree.toString());
-        System.out.println(_behavior == Cumpridor.getCumpridorBehavior());
-        System.out.println(!lastThree.get(lastThree.size() - 1));
-
         if(lastThree.stream().noneMatch(v -> v == true)) {//if all are false
             setBehavior(Faltoso.getFaltosoBehavior());
-            System.out.println("teste1");
             return;
         }
         if(_behavior == Faltoso.getFaltosoBehavior() && lastThree.stream().allMatch(v -> v)) {
             setBehavior(Normal.getNormalBehavior());
-            System.out.println("teste2");
             return;
         }
         if(_behavior == Cumpridor.getCumpridorBehavior() && !lastThree.get(lastThree.size() - 1)) { //se for cumpridor e atrasar alguma
             setBehavior(Normal.getNormalBehavior());
-            System.out.println("teste3");
             return;
         }
         if(newSize == 5 && _lastRequestsOnTime.subList(0,newSize).stream().noneMatch(v -> v == false))

@@ -183,9 +183,13 @@ public class LibraryManager {
         _modified = true;
   }
 
-  public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{
+    public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{
         return _library.showUserNotifications(userId);
     }
+
+   public void subscribeObserver(int userId, int workId, NotificationType type){
+        _library.subscribeObserver(userId, workId, type);
+   } 
 }
 
 

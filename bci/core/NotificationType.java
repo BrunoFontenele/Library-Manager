@@ -1,6 +1,6 @@
 package bci.core;
 
 public enum NotificationType{
-    Requisitions,
-    Disponibility;
+    REQUISIÇÂO,
+    DISPONIBILIDADE;
 }

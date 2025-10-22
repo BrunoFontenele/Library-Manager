@@ -121,7 +121,7 @@ public class Library implements Serializable {
             work.setNumberOfCopies(total + quantityChange);
             work.setNumberOfAvailableCopies(available + quantityChange);
         }
-        work.notifyObservers(NotificationType.Disponibility, work.toString());
+        work.notifyObservers(NotificationType.DISPONIBILIDADE, work.toString());
     }
 
 
@@ -248,7 +248,7 @@ public class Library implements Serializable {
     user.addUserRequest(request);
     work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()-1); //reduzindo o numero de copias disponiveis
 
-      work.notifyObservers(NotificationType.Requisitions, work.toString());
+    work.notifyObservers(NotificationType.REQUISIÇÂO, work.toString());
     return request.getEndOfRequest();
   }
 
@@ -256,7 +256,7 @@ public class Library implements Serializable {
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
     if(res>=0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
-    work.notifyObservers(NotificationType.Disponibility, work.toString());
+    work.notifyObservers(NotificationType.DISPONIBILIDADE, work.toString());
     return res;
   }
 
@@ -274,5 +274,9 @@ public class Library implements Serializable {
 
     void setFine(int userId, int quant){
         _usersById.get(userId).setFine(quant);
+    }
+    
+    void subscribeObserver(int userId, int workId, NotificationType type){
+        _worksById.get(workId).addObserver(_usersById.get(userId), type);
     }
 }

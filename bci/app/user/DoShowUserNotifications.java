@@ -21,7 +21,7 @@ class DoShowUserNotifications extends Command<LibraryManager> {
   protected final void execute() throws CommandException{
     int id = integerField("userId");
     try {
-      _receiver.showUserNotifications(id);
+      _display.popup(_receiver.showUserNotifications(id));
     } catch (NoSuchUserExceptionCore e) {
       throw new NoSuchUserException(id);
     }
