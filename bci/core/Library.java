@@ -2,7 +2,6 @@ package bci.core;
 
 import java.io.*;
 import java.util.*;
-
 import bci.core.exception.*;
 
 public class Library implements Serializable {
@@ -47,17 +46,14 @@ public class Library implements Serializable {
     }
 
     List<Work> getListOfWorks() {
-        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
         return List.copyOf(_worksById.values());
     }
 
     List<Creator> getListOfCreators() {
-        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
         return List.copyOf(_creatorsByName.values());
     }
 
     List<User> getListOfUsers() {
-        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
         return List.copyOf(_usersById.values());
     }
 
@@ -146,7 +142,7 @@ public class Library implements Serializable {
             }
         }
         return found ? sb.toString() : "";
-    } // ao inves de "" fzr exceptions
+    }
 
 
     // ---------- REGISTER WORKS / CREATORS ----------

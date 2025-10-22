@@ -2,7 +2,6 @@ package bci.core;
 
 import bci.core.exception.*;
 import java.io.*;
-import java.util.Comparator;
 import java.util.List;
 
 public class LibraryManager {
@@ -61,8 +60,6 @@ public class LibraryManager {
     public void load(String filename) throws UnavailableFileException {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             Object obj = in.readObject();
-            if (!(obj instanceof Library)) //checagem desnecessaia. Prof
-                throw new UnavailableFileException(filename);
             _library = (Library) obj;
             _filename = filename;
             _modified = false;
@@ -95,7 +92,6 @@ public class LibraryManager {
   // WORK
 
     public boolean validWork(int workId){
-        // validation should not mutate manager state
         return _library.validWork(workId);
     }
 

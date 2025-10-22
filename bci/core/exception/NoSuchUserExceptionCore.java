@@ -1,7 +1,5 @@
 package bci.core.exception;
 
-import pt.tecnico.uilib.menus.CommandException;
-
 /**
  * Class encoding reference to an invalid user id.
  */

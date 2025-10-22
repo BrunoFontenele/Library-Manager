@@ -1,6 +1,5 @@
 package bci.core;
 
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.io.Serial;
 import java.util.List;

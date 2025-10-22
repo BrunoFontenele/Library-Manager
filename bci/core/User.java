@@ -3,7 +3,6 @@ package bci.core;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 public class User implements Serializable, Notifiable{
@@ -74,7 +73,6 @@ public class User implements Serializable, Notifiable{
     int getActiveNumReq(){return _activeUserRequests.size();}
 
     List<Request> getUserRequests(){
-        // defensive copy to avoid privacy leaks
         return List.copyOf(_activeUserRequests);
     }
 
@@ -94,7 +92,9 @@ public class User implements Serializable, Notifiable{
         return -1; //isso vai ser visto no app
     }
 
-    List<Boolean> getLastRequestsOnTime(){return Collections.unmodifiableList(_lastRequestsOnTime);}
+    List<Boolean> getLastRequestsOnTime(){
+        return List.copyOf(_lastRequestsOnTime);
+    }
 
     //checa se todas as requisicoes estao ativas
     boolean checkRequisitions(int day){
@@ -113,7 +113,6 @@ public class User implements Serializable, Notifiable{
     }
 
     List<Notification> viewNotifications() {
-        // return a defensive copy and clear the internal list
         List<Notification> copy = List.copyOf(_notifications);
         _notifications.clear();
         return copy;
