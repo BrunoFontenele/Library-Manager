@@ -1,23 +1,21 @@
 package bci.core;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.io.Serial;
+import java.util.List;
 
-interface UserBehavior{
+public interface UserBehavior{
     int getReqTime(int copiesNum);
     int getMaxReq();
     String toString();
+    void checkBehavior(User u);
 }
 
 class Normal implements UserBehavior, Serializable {
-    private static Normal _normal; //posso ter stattic?
+    public static final Normal INSTANCE = new Normal();
 
     private Normal() {}
-
-    static Normal getNormalBehavior() {
-        if(_normal == null)
-            _normal = new Normal();
-        return _normal;
-    }
 
     @Override
     public int getReqTime(int copiesNum){
@@ -36,20 +34,27 @@ class Normal implements UserBehavior, Serializable {
         return "NORMAL";
     }
 
+    public void checkBehavior(User u) {
+        List<Boolean> history = u.getLastRequestsOnTime();
+        int size = history.size();
 
+        if (size >= 5 && history.subList(size-5, size).stream().allMatch(v -> v))
+            u.setBehavior(Cumpridor.INSTANCE);
+        else if (size >= 3 && history.subList(size-3, size).stream().noneMatch(v -> v))
+            u.setBehavior(Faltoso.INSTANCE);
+    }
+
+    @Serial
+    private Object readResolve() {
+        return Normal.INSTANCE;
+    }
 }
 
 
 class Faltoso implements UserBehavior, Serializable {
-    private static Faltoso _faltoso; //posso ter stattic?
+    public static final Faltoso INSTANCE = new Faltoso();
 
     private Faltoso() {}
-
-    static Faltoso getFaltosoBehavior() {
-        if(_faltoso == null)
-            _faltoso = new Faltoso();
-        return _faltoso;
-    }
 
     @Override
     public int getReqTime(int copiesNum){
@@ -65,18 +70,23 @@ class Faltoso implements UserBehavior, Serializable {
     public String toString(){
         return "FALTOSO";
     }
+
+    public void checkBehavior(User u) {
+        List<Boolean> history = u.getLastRequestsOnTime();
+        if (history.size() >= 3 && history.subList(history.size()-3, history.size()).stream().allMatch(v -> v))
+            u.setBehavior(Normal.INSTANCE);
+    }
+
+    @Serial
+    private Object readResolve() {
+        return Faltoso.INSTANCE;
+    }
 }
 
 class Cumpridor implements UserBehavior, Serializable {
-    private static Cumpridor _cumpridor; //posso ter stattic?
+    public static final Cumpridor INSTANCE = new Cumpridor();
 
     private Cumpridor() {}
-//REMOVER SIMGLETON (\serializacao)
-    static Cumpridor getCumpridorBehavior() {
-        if(_cumpridor == null)
-            _cumpridor = new Cumpridor();
-        return _cumpridor;
-    }
 
     @Override
     public int getReqTime(int copiesNum){
@@ -93,5 +103,16 @@ class Cumpridor implements UserBehavior, Serializable {
     @Override
     public String toString(){
         return "CUMPRIDOR";
+    }
+
+    public void checkBehavior(User u) {
+        List<Boolean> history = u.getLastRequestsOnTime();
+        if (history.contains(false))
+            u.setBehavior(Normal.INSTANCE);
+    }
+
+    @Serial
+    private Object readResolve() {
+        return Cumpridor.INSTANCE;
     }
 }

@@ -1,5 +1,6 @@
 package bci.app.main;
 
+import bci.app.exception.FileOpenFailedException;
 import bci.core.LibraryManager;
 import bci.core.exception.MissingFileAssociationException;
 import bci.core.exception.UnavailableFileException;
@@ -18,7 +19,7 @@ class DoSaveFile extends Command<LibraryManager> {
     }
 
     @Override
-    protected final void execute() {
+    protected final void execute() throws FileOpenFailedException {
         try {
             _receiver.save();
         } catch (UnavailableFileException e) {
@@ -31,7 +32,9 @@ class DoSaveFile extends Command<LibraryManager> {
                 _display.popup("Erro: associação de ficheiro em falta");
             } catch (IOException ioEx) {
                 _display.popup("Erro ao guardar a biblioteca");
-            } catch(UnavailableFileException er){}
+            } catch(UnavailableFileException er){
+                throw new FileOpenFailedException(er);
+            }
         } catch (IOException e) {
             _display.popup("Erro ao guardar a biblioteca");
         }

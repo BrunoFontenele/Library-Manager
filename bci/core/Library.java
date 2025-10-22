@@ -214,7 +214,9 @@ public class Library implements Serializable {
         throw new NoSuchUserExceptionCore(userId);
     }
 
-    //showUserNotifications
+    void subscribeObserver(int userId, int workId, NotificationType type){
+        _worksById.get(workId).addObserver(_usersById.get(userId), type);
+    }
 
     String listUsers() {
         List<User> copy = new ArrayList<>(_usersById.values());
@@ -226,8 +228,18 @@ public class Library implements Serializable {
         return sb.toString();
     }
 
-    //payFine
+    void payFine(int userId) throws UserIsActiveExceptionCore{
+        if(!_usersById.get(userId).isActive()){
+            _usersById.get(userId).payFine(getCurrentDay());
+        }
+        else{
+            throw new UserIsActiveExceptionCore(userId);
+        }
+    }
 
+    void setFine(int userId, int quant){
+        _usersById.get(userId).setFine(quant);
+    }
 
   //------------ CREATORS -------------
 
@@ -237,7 +249,7 @@ public class Library implements Serializable {
             _creatorsByName.remove(creator.getName());
   }
 
-  //------------Requisitions-------------
+  //------------ REQUISITIONS/BEHAVIOR  -------------
 
   int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
     User user = _usersById.get(userId);
@@ -257,22 +269,13 @@ public class Library implements Serializable {
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
     if(res>=0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
-    if(work.getNumberOfAvailableCopies()== 1){
+    if(work.getNumberOfAvailableCopies() == 1){
         work.notifyObservers(NotificationType.DISPONIBILIDADE, work.toString());
     }
     return res;
   }
 
-  void checkActive(int userId){_usersById.get(userId).checkActive(getCurrentDay());}
-
-    void payFine(int userId) throws UserIsActiveExceptionCore{
-        if(!_usersById.get(userId).isActive()){
-            _usersById.get(userId).payFine(getCurrentDay());
-        }
-        else{
-            throw new UserIsActiveExceptionCore(userId);
-        }
-    }
+  //------------ NOTIFICATIONS  -------------
 
     List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
         User user = _usersById.get(userId);
@@ -282,11 +285,4 @@ public class Library implements Serializable {
         return user.viewNotifications();
     }
 
-    void setFine(int userId, int quant){
-        _usersById.get(userId).setFine(quant);
-    }
-    
-    void subscribeObserver(int userId, int workId, NotificationType type){
-        _worksById.get(workId).addObserver(_usersById.get(userId), type);
-    }
 }

@@ -3,9 +3,9 @@ package bci.core;
 import java.io.Serializable;
 
 class Request implements Serializable {
-    private int _userId;
-    private int _workId;
-    private int _endOfRequest;
+    private final int _userId;
+    private final int _workId;
+    private final int _endOfRequest;
 
     Request(int userId, int workId, int endOfRequest){
         _userId = userId;

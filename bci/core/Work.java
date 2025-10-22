@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class Work implements Serializable, NotifiableWork {
+public abstract class Work implements Serializable, NotifiableWork {
     private final int _workId;
     private String _title;
     private int _price;
@@ -24,19 +24,13 @@ abstract class Work implements Serializable, NotifiableWork {
 
     int getWorkId() {return _workId;}
 
-    int getNumberOfCopies() {return _numberOfCopies;}
-
-    int getNumberOfAvailableCopies() {return _availableCopies;}
-
     String getTitle() {return _title;}
 
     int getPrice() {return _price;}
 
-    abstract String getType();
+    int getNumberOfCopies() {return _numberOfCopies;}
 
-    abstract String getAdInfo();
-
-    abstract List<Creator> listCreators();
+    int getNumberOfAvailableCopies() {return _availableCopies;}
 
     void setNumberOfCopies(int numberOfCopies) { _numberOfCopies = numberOfCopies; }
 
@@ -46,7 +40,7 @@ abstract class Work implements Serializable, NotifiableWork {
         if(_category == Category.FICTION) return "Ficção";
         if(_category == Category.REFERENCE) return "Referência";
         return "Técnica e Científica";
-    } 
+    }
 
     @Override
     public String toString(){
@@ -80,5 +74,11 @@ abstract class Work implements Serializable, NotifiableWork {
             }
         }
     }
+
+    abstract String getType();
+
+    abstract String getAdInfo();
+
+    abstract List<Creator> listCreators();
 
 }

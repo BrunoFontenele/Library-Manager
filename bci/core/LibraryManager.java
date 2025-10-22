@@ -25,7 +25,7 @@ public class LibraryManager {
      * @throws UnavailableFileException If no file name is set.
      * @throws IOException If an error occurs while writing the file.
      */
-    public void save() throws UnavailableFileException, IOException, UnavailableFileException{
+    public void save() throws IOException, UnavailableFileException{
         if (_filename == null || _filename.isBlank()) {
             throw new UnavailableFileException(_filename);
         }
@@ -84,7 +84,7 @@ public class LibraryManager {
         }
     }
 
-    // MÉTODOS DE GESTÃO
+    // TIME
 
   public int getCurrentDay() { return _library.getCurrentDay(); }
 
@@ -92,6 +92,25 @@ public class LibraryManager {
       _library.advanceDays(days); 
       _modified = true;
   }
+
+  // WORK
+
+    public boolean validWork(int workId){
+        boolean res = _library.validWork(workId);
+        _modified = true;
+        return res;
+    }
+
+    public void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type) {
+        _library.registerDvd(igac, creator, title, price, numberOfCopies, type);
+        _modified = true;
+    }
+
+    public void registerBook(String isbn, int price, String title, int numberOfCopies,
+                             java.util.List<Creator> creators, Category type) {
+        _library.registerBook(isbn, price, title, numberOfCopies, creators, type);
+        _modified = true;
+    }
 
   public void alterInvWork(int number, int workId) throws NotEnoughInventoryExceptionCore, NoSuchWorkExceptionCore {
       _library.alterInvWork(number, workId); 
@@ -109,6 +128,11 @@ public class LibraryManager {
 
   public String performSearch(String search){return _library.performSearch(search);}
 
+    // USER
+
+    public boolean validUser(int userId){
+        return _library.validUser(userId);
+    }
 
   public int registerUser(String name, String email) { 
       int res = _library.registerUser(name, email); 
@@ -120,18 +144,10 @@ public class LibraryManager {
 
 
   public String listUsers() { return _library.listUsers(); }
-  
 
-  public void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type) {
-      _library.registerDvd(igac, creator, title, price, numberOfCopies, type);
-      _modified = true;
-  }
+    public boolean isModified(){return _modified;}
 
-  public void registerBook(String isbn, int price, String title, int numberOfCopies, 
-                            java.util.List<Creator> creators, Category type) {
-      _library.registerBook(isbn, price, title, numberOfCopies, creators, type);
-      _modified = true;
-  }
+    // CREATOR
 
   public Creator registerCreator(String name) {
       Creator res = _library.registerCreator(name);
@@ -139,8 +155,7 @@ public class LibraryManager {
       return res;
   }
 
-  public boolean isModified(){return _modified;}
-
+  // REQUESTS
 
   public int requestWork(int userId, int workId) throws CouldNotRequestException, NotEnoughInventoryExceptionCore{
     int res = _library.requestWork(userId, workId);
@@ -158,15 +173,7 @@ public class LibraryManager {
     return e.getError();
   }
 
-  public boolean validUser(int userId){
-    return _library.validUser(userId);
-  }
-
-  public boolean validWork(int workId){
-    boolean res = _library.validWork(workId);
-    _modified = true;
-    return res;
-  }
+  // FINE
 
   public void payFine(int userId) throws UserIsActiveExceptionCore{
         _library.payFine(userId);
@@ -178,10 +185,7 @@ public class LibraryManager {
         _modified = true;
   }
 
-  public void checkActive(int userId){
-        _library.checkActive(userId);
-        _modified = true;
-  }
+  // NOTIFICATIONS
 
     public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{
         return _library.showUserNotifications(userId);
