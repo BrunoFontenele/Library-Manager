@@ -2,7 +2,6 @@ package bci.core;
 
 import bci.core.exception.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -96,9 +95,8 @@ public class LibraryManager {
   // WORK
 
     public boolean validWork(int workId){
-        boolean res = _library.validWork(workId);
-        _modified = true;
-        return res;
+        // validation should not mutate manager state
+        return _library.validWork(workId);
     }
 
     public void registerDvd(String igac, Creator creator, String title, int price, int numberOfCopies, Category type) {

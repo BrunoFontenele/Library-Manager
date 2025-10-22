@@ -2,7 +2,6 @@ package bci.core;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 class Dvd extends Work{
@@ -29,7 +28,7 @@ class Dvd extends Work{
     List<Creator> listCreators() {
         List<Creator> creator = new ArrayList<>();
         creator.add(_creator);
-        return Collections.unmodifiableList(creator);
+        return List.copyOf(creator);
     }
 
     String getIgac(){return _igac;}

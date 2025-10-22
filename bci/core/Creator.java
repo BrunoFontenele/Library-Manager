@@ -1,10 +1,9 @@
 package bci.core;
 
-import java.util.Collections;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 class Creator implements Serializable{
     private final String _name;
@@ -31,7 +30,7 @@ class Creator implements Serializable{
     String getName() {return _name;}
 
     List<Work> getWorkList() {
-        return Collections.unmodifiableList(_workList);
+        return List.copyOf(_workList);
     }
     
 } 

@@ -3,7 +3,6 @@ package bci.core;
 import java.io.*;
 import java.util.*;
 
-import bci.app.exception.UserIsActiveException;
 import bci.core.exception.*;
 
 public class Library implements Serializable {
@@ -48,15 +47,18 @@ public class Library implements Serializable {
     }
 
     List<Work> getListOfWorks() {
-        return Collections.unmodifiableList(new ArrayList<>(_worksById.values()));
+        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
+        return List.copyOf(_worksById.values());
     }
 
     List<Creator> getListOfCreators() {
-        return Collections.unmodifiableList(new ArrayList<>(_creatorsByName.values()));
+        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
+        return List.copyOf(_creatorsByName.values());
     }
 
     List<User> getListOfUsers() {
-        return Collections.unmodifiableList(new ArrayList<>(_usersById.values()));
+        // return an unmodifiable copy to avoid privacy leaks (defensive copy)
+        return List.copyOf(_usersById.values());
     }
 
 

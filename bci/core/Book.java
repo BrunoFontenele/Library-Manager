@@ -2,7 +2,6 @@ package bci.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 class Book extends Work{
     private String _isbn;
@@ -31,7 +30,7 @@ class Book extends Work{
 
     @Override
     List<Creator> listCreators() {
-        return Collections.unmodifiableList(_creators);
+        return List.copyOf(_creators);
     }
 
     String getIsbn(){return _isbn;}

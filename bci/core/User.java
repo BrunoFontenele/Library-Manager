@@ -74,7 +74,8 @@ public class User implements Serializable, Notifiable{
     int getActiveNumReq(){return _activeUserRequests.size();}
 
     List<Request> getUserRequests(){
-        return Collections.unmodifiableList(_activeUserRequests);
+        // defensive copy to avoid privacy leaks
+        return List.copyOf(_activeUserRequests);
     }
 
     void addUserRequest(Request request){_activeUserRequests.add(request);}
@@ -112,7 +113,8 @@ public class User implements Serializable, Notifiable{
     }
 
     List<Notification> viewNotifications() {
-        List<Notification> copy = new ArrayList<>(_notifications);
+        // return a defensive copy and clear the internal list
+        List<Notification> copy = List.copyOf(_notifications);
         _notifications.clear();
         return copy;
     }
