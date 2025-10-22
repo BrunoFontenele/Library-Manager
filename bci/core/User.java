@@ -65,7 +65,7 @@ class User implements Serializable, Notifiable{
                 iterator.remove();
                 _lastRequestsOnTime.add(day <= request.getEndOfRequest());
                 checkBehavior();
-                return _fine;
+                return Math.max((day-request.getEndOfRequest()) * 5, 0);
             }
         }
         return -1; //isso vai ser visto no app
@@ -89,6 +89,13 @@ class User implements Serializable, Notifiable{
         }
     }
 
+    void payRequestFine(int quant){
+        if(quant<=_fine)
+            _fine -= quant;
+        if(_activeUserRequests.isEmpty())
+            _isActive = true;
+    }
+
     void payFine(){
         _fine = 0;
         if(_activeUserRequests.isEmpty())
@@ -104,13 +111,12 @@ class User implements Serializable, Notifiable{
         for(Request request : _activeUserRequests)
             if(request.getEndOfRequest()+1 < day) {
                 _isActive = false;
-                System.out.println(day);
                 _fine += (day - request.getEndOfRequest()) * 5;
             }
     }
 
     public String toString(){
-        if(_fine == 0)
+        if(_isActive)
             return String.format("%d - %s - %s - %s - %s",
             _id, _name, _email, _behavior, _isActive? "ACTIVO":"SUSPENSO");
         return String.format("%d - %s - %s - %s - %s - %s %d",

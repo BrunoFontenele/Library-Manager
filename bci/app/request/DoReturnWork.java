@@ -36,7 +36,7 @@ class DoReturnWork extends Command<LibraryManager> {
           if(fine > 0) {
               _display.popup(Message.showFine(userId, fine));
               if (Form.confirm(Prompt.finePaymentChoice()))
-                  _receiver.payFine(userId);
+                  _receiver.payRequestFine(userId, fine);
           }
   }
 }

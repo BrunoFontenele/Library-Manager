@@ -255,15 +255,14 @@ public class Library implements Serializable {
   int returnWork(int userId, int workId){
     Work work = _worksById.get(workId);
     int res = _usersById.get(userId).removeUserRequest(workId, getCurrentDay());
-    if(res>0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
+    if(res>=0) work.setNumberOfAvailableCopies(work.getNumberOfAvailableCopies()+1);
     work.notifyObservers(NotificationType.Disponibility, work.toString());
     return res;
   }
 
-  void payFine(int userId){
-        _usersById.get(userId).payFine();
-    }
+  void payRequestFine(int userId, int quant){_usersById.get(userId).payRequestFine(quant);}
 
+    void payFine(int userId){_usersById.get(userId).payFine();}
 
     List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore {
         User user = _usersById.get(userId);

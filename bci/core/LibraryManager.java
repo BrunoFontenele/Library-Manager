@@ -168,9 +168,13 @@ public class LibraryManager {
     return res;
   }
 
-  public void payFine(int userId){
-    _library.payFine(userId);
+  public void payRequestFine(int userId, int quant){
+    _library.payRequestFine(userId, quant);
     _modified = true;
+  }
+
+  public void payFine(int userId){
+        _library.payFine(userId);
   }
 
   public List<Notification> showUserNotifications(int userId) throws NoSuchUserExceptionCore{
