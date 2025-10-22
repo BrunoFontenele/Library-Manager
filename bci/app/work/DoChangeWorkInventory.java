@@ -13,10 +13,8 @@ import bci.core.exception.*;
 class DoChangeWorkInventory extends Command<LibraryManager> {
   DoChangeWorkInventory(LibraryManager receiver) {
     super(Label.CHANGE_WORK_INVENTORY, receiver);
-     //FIXME add command fields
-    addIntegerField("quantity", Prompt.amountToDecrement());
     addIntegerField("id", Prompt.workId());
-    
+    addIntegerField("quantity", Prompt.amountToDecrement());
   }
 // Falta:No caso de nao ser poss ˜ ´ıvel
 //actualizar o numero de exemplares devido ao facto de a quantidade indicada ser inv ´ alida, ent ´ ao a operac¸ ˜ ao n ˜ ao deve ter qualquer ˜
